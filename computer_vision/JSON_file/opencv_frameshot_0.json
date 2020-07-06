@@ -1,0 +1,59 @@
+{
+    "categories": [
+        {
+            "name": "others_",
+            "score": 0.046875
+        }
+    ],
+    "color": {
+        "dominantColorForeground": "Grey",
+        "dominantColorBackground": "Grey",
+        "dominantColors": [
+            "Grey",
+            "Black",
+            "Brown"
+        ],
+        "accentColor": "B1331A",
+        "isBwImg": false,
+        "isBWImg": false
+    },
+    "description": {
+        "tags": [
+            "person",
+            "indoor",
+            "man",
+            "table",
+            "sitting",
+            "front",
+            "looking",
+            "holding",
+            "food",
+            "glasses",
+            "computer",
+            "using",
+            "hand",
+            "laptop",
+            "standing",
+            "young",
+            "woman",
+            "phone",
+            "room",
+            "plate",
+            "kitchen",
+            "people"
+        ],
+        "captions": [
+            {
+                "text": "a man sitting on a table",
+                "confidence": 0.4552929873430923
+            }
+        ]
+    },
+    "brands": [],
+    "requestId": "e4353f59-8a89-4d19-8343-7b4c5c292ded",
+    "metadata": {
+        "width": 640,
+        "height": 480,
+        "format": "Jpeg"
+    }
+}
