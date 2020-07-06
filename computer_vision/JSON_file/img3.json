@@ -1,12 +1,16 @@
 {
     "categories": [
         {
+            "name": "abstract_",
+            "score": 0.00390625
+        },
+        {
             "name": "others_",
-            "score": 0.01171875
+            "score": 0.10546875
         },
         {
             "name": "outdoor_",
-            "score": 0.0078125,
+            "score": 0.01171875,
             "detail": {
                 "landmarks": []
             }
@@ -16,40 +20,40 @@
         "dominantColorForeground": "White",
         "dominantColorBackground": "White",
         "dominantColors": [
-            "White"
+            "White",
+            "Grey"
         ],
-        "accentColor": "BC610F",
+        "accentColor": "595D51",
         "isBwImg": false,
         "isBWImg": false
     },
     "description": {
         "tags": [
-            "footwear",
             "clothing"
         ],
         "captions": [
             {
-                "text": "a close up of a footwear",
-                "confidence": 0.4962738970447349
+                "text": "a close up of a logo",
+                "confidence": 0.6607978788346095
             }
         ]
     },
     "brands": [
         {
-            "name": "McDonald's",
-            "confidence": 0.743,
+            "name": "Adidas",
+            "confidence": 0.735,
             "rectangle": {
-                "x": 244,
-                "y": 287,
-                "w": 306,
-                "h": 263
+                "x": 293,
+                "y": 55,
+                "w": 74,
+                "h": 55
             }
         }
     ],
-    "requestId": "040442cf-bf33-4674-be8b-8b3ae5790531",
+    "requestId": "f85e6949-8232-4196-837e-64ecb8b6e940",
     "metadata": {
-        "width": 1140,
-        "height": 800,
+        "width": 768,
+        "height": 596,
         "format": "Jpeg"
     }
 }

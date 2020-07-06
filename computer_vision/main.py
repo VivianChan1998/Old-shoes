@@ -1,4 +1,5 @@
 import os
+from os.path import basename
 import sys
 import json
 import requests
@@ -22,7 +23,7 @@ else:
 analyze_url = endpoint + "vision/v3.0/analyze"
 
 # Set image_path
-image_path = "C:\\Users\\v-yhsiao\\Documents\\code\\old_shoes\\img\\img4.jpg"
+image_path = "C:\\Users\\v-yhsiao\\Documents\\code\\old_shoes\\img\\good_img\\img3.jpg"
 
 # Read the image into a byte array
 image_data = open(image_path, "rb").read()
@@ -37,8 +38,13 @@ response.raise_for_status()
 analysis = response.json() # the JSON return value of the image
 print(analysis) 
 
+# split the image name to rename the JSON file
+base = os.path.basename(image_path)
+file_name = os.path.splitext(base)[0]
+
 # write into the JSON file
-with open('analysis.json', 'w', encoding='utf-8') as f:
+JSON_dir = "C:\\Users\\v-yhsiao\\Documents\\code\\old_shoes\\computer_vision\\JSON_file\\"
+with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
     json.dump(analysis, f, ensure_ascii=False, indent=4)
 
 # set the show title on the image window
