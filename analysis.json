@@ -1,0 +1,55 @@
+{
+    "categories": [
+        {
+            "name": "others_",
+            "score": 0.01171875
+        },
+        {
+            "name": "outdoor_",
+            "score": 0.0078125,
+            "detail": {
+                "landmarks": []
+            }
+        }
+    ],
+    "color": {
+        "dominantColorForeground": "White",
+        "dominantColorBackground": "White",
+        "dominantColors": [
+            "White"
+        ],
+        "accentColor": "BC610F",
+        "isBwImg": false,
+        "isBWImg": false
+    },
+    "description": {
+        "tags": [
+            "footwear",
+            "clothing"
+        ],
+        "captions": [
+            {
+                "text": "a close up of a footwear",
+                "confidence": 0.4962738970447349
+            }
+        ]
+    },
+    "brands": [
+        {
+            "name": "McDonald's",
+            "confidence": 0.743,
+            "rectangle": {
+                "x": 244,
+                "y": 287,
+                "w": 306,
+                "h": 263
+            }
+        }
+    ],
+    "requestId": "040442cf-bf33-4674-be8b-8b3ae5790531",
+    "metadata": {
+        "width": 1140,
+        "height": 800,
+        "format": "Jpeg"
+    }
+}
