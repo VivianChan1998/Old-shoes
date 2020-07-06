@@ -51,7 +51,12 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
   ```
 
 
-## Folders
+## Files
+### /main.py
+main program of the computer vision: to detect the brands of the input img
+
+### /analysis.json
+the json file to record the returning result of the API detection
 
 
 
