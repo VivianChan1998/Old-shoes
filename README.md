@@ -5,11 +5,11 @@ for Windows OS.
 
 
 ## Usage
-### clone the repo
+### 1. clone the repo
 ```
 git clone https://github.com/VivianChan1998/Old-shoes.git
 ```
-### install dev dependencies
+### 2. install dev dependencies
 
 #### install and activate virtual environment (https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/)
 
@@ -35,17 +35,17 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
   pip install requests matplotlib pillow
   ```
 
-### register the Azure portal and set up your own computer vision resource(https://portal.azure.com/)
+### 3. register the Azure portal and set up your own computer vision resource(https://portal.azure.com/)
 
-### set the key and the endpoint in the CLI
+### 4. set the key and the endpoint in the CLI
   ```
   setx COMPUTER_VISION_KEY "your-key"
   setx COMPUTER_VISION_ENDPOINT "your-endpoint"
   ```
 
-### reopen the CLI
+### 5. reopen the CLI
 
-### in the project directory, type the following command and execute
+### 6. in the project directory, type the following command and execute
   ```
   python3 main.py
   ```
