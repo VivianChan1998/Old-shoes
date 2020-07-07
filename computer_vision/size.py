@@ -12,7 +12,10 @@ import config_own
 
 
 def shot_cv2():
-	# # cpature image by cv2
+	# set the img storage path
+	img_path = config_own.SHOT_CV2_DIR
+
+	# cpature image by cv2
 	cam = cv2.VideoCapture(0)
 	cv2.namedWindow("image capture")
 	img_counter = 0
@@ -31,7 +34,7 @@ def shot_cv2():
 	    elif k%256 == 32:
 	        # SPACE pressed
 	        img_name = "opencv_frameshot_{}.jpg".format(img_counter)
-	        cv2.imwrite(img_name, frame)
+	        cv2.imwrite( img_path + img_name, frame)
 	        print("{} written!".format(img_name))
 	        img_counter += 1
 	cam.release()
@@ -56,7 +59,7 @@ def img_processing():
 	analyze_url = endpoint + "vision/v3.0/analyze"
 
 	# Set image_path
-	image_dir = config_own.IMG_DIR
+	image_dir = config_own.SHOT_CV2_DIR
 	image_path = image_dir + "opencv_frameshot_0.jpg"
 
 	# Read the image into a byte array
