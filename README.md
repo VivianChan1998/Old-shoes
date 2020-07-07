@@ -57,6 +57,7 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
   ```
   # First create the "config_own.py" file in the "computer_vision" directory
   # and then set up the parameters: JSON_DIR, SHOT_CV2_DIR, IMG_PATH, IMG_DIR
+  
   JSON_DIR = "your-own-path" # which stands for the path of the JSON directory
   SHOT_CV2_DIR = "your-own-path" # which stands for the path of the images that cv2 camera shoot
   IMG_PATH = "your-own-path" # which stands for the path of the to-be-analysized-image
