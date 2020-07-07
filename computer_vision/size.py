@@ -40,9 +40,14 @@ def shot_cv2():
 	cam.release()
 	cv2.destroyAllWindows()
 
+########## To-Do ##########
+### optimization ### warping ###
+### the shot-raw-img is needed to be warpped
+### or the coin and shoes will be in inaccurate scales
+# def img_warping():
 
 
-def img_processing():
+def img_transfer_json():
 	img_counter = 0
 	# Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
 	if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
@@ -99,4 +104,4 @@ def img_processing():
 
 if __name__ == "__main__":
 	shot_cv2()
-	img_processing()
+	img_transfer_json()
