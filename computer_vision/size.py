@@ -43,6 +43,7 @@ def shot_cv2():
 
 
 def img_processing():
+	img_counter = 0
 	# Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
 	if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
 	    subscription_key = os.environ['COMPUTER_VISION_SUBSCRIPTION_KEY']
@@ -58,31 +59,43 @@ def img_processing():
 
 	analyze_url = endpoint + "vision/v3.0/analyze"
 
-	# Set image_path
-	image_dir = config_own.SHOT_CV2_DIR
-	image_path = image_dir + "opencv_frameshot_0.jpg"
+	while True:
+		try: # if there are still images remained to be analyzed
+			# Set image_path
+			image_dir = config_own.SHOT_CV2_DIR
+			image_name = "opencv_frameshot_{}.jpg".format(img_counter)
+			image_path = image_dir + image_name
 
-	# Read the image into a byte array
-	image_data = open(image_path, "rb").read()
-	headers = {'Ocp-Apim-Subscription-Key': subscription_key,
-	           'Content-Type': 'application/octet-stream'}
-	params = {'visualFeatures': 'Brands,Categories,Description,Color'}
-	response = requests.post(
-	    analyze_url, headers=headers, params=params, data=image_data)
-	response.raise_for_status()
+			# Read the image into a byte array
+			image_data = open(image_path, "rb").read()
+			headers = {'Ocp-Apim-Subscription-Key': subscription_key,
+			           'Content-Type': 'application/octet-stream'}
+			params = {'visualFeatures': 'Brands,Objects'}
+			response = requests.post(
+			    analyze_url, headers=headers, params=params, data=image_data)
+			response.raise_for_status()
 
-	# Description of the image
-	analysis = response.json() # the JSON return value of the image
-	print(analysis) 
+			# Description of the image
+			analysis = response.json() # the JSON return value of the image
+			print(analysis) 
 
-	# split the image name to rename the JSON file
-	base = os.path.basename(image_path)
-	file_name = os.path.splitext(base)[0]
+			# split the image name to rename the JSON file
+			base = os.path.basename(image_path)
+			file_name = os.path.splitext(base)[0]
 
-	# write into the JSON file
-	JSON_dir = config_own.JSON_DIR
-	with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
-	    json.dump(analysis, f, ensure_ascii=False, indent=4)
+			# write into the JSON file
+			JSON_dir = config_own.JSON_DIR
+			with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
+			    json.dump(analysis, f, ensure_ascii=False, indent=4)
+
+			k = cv2.waitKey(1)
+			img_counter += 1	
+
+		except FileNotFoundError: # if there is no img remained to be analyzed
+			break
+		
+		if k%256 == 27:
+			break
 
 if __name__ == "__main__":
 	shot_cv2()
