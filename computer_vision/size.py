@@ -37,8 +37,11 @@ def shot_cv2():
 	        cv2.imwrite( img_path + img_name, frame)
 	        print("{} written!".format(img_name))
 	        img_counter += 1
+	        break
+
 	cam.release()
 	cv2.destroyAllWindows()
+
 
 ########## To-Do ##########
 ### optimization ### warping ###
@@ -96,7 +99,7 @@ def img_transfer_json():
 			k = cv2.waitKey(1)
 			img_counter += 1
 
-			# return value: json.objects.coin.w & json.objects.___.w
+			# return value: coin's width & object's width
 			return analysis
 
 
@@ -119,5 +122,6 @@ def scaling(input_json):
 if __name__ == "__main__":
 	shot_cv2()
 	input_json = img_transfer_json()
+	img_transfer_json()
 	obj_scale = scaling(input_json)
 	print(obj_scale)
