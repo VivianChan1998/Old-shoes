@@ -82,7 +82,7 @@ def img_transfer_json():
 
 			# Description of the image
 			analysis = response.json() # the JSON return value of the image
-			print(analysis) 
+			print(analysis)
 
 			# split the image name to rename the JSON file
 			base = os.path.basename(image_path)
@@ -94,7 +94,11 @@ def img_transfer_json():
 			    json.dump(analysis, f, ensure_ascii=False, indent=4)
 
 			k = cv2.waitKey(1)
-			img_counter += 1	
+			img_counter += 1
+
+			# return value: json.objects.coin.w & json.objects.___.w
+			return analysis
+
 
 		except FileNotFoundError: # if there is no img remained to be analyzed
 			break
@@ -102,6 +106,18 @@ def img_transfer_json():
 		if k%256 == 27:
 			break
 
+# to scale the main_obj size by a NT$10 coin
+# NT$10 coin's diameter = 26mm
+def scaling(input_json):
+	ruler = input_json["objects"][0]["rectangle"]["w"]
+	main_obj = input_json["objects"][1]["rectangle"]["w"]
+
+	main_obj_scale = (main_obj/ruler)*26
+	return main_obj_scale
+
+
 if __name__ == "__main__":
 	shot_cv2()
-	img_transfer_json()
+	input_json = img_transfer_json()
+	obj_scale = scaling(input_json)
+	print(obj_scale)
