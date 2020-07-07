@@ -16,7 +16,7 @@ def shot_cv2():
 	img_path = config_own.SHOT_CV2_DIR
 
 	# cpature image by cv2
-	cam = cv2.VideoCapture(0)
+	cam = cv2.VideoCapture(1)
 	cv2.namedWindow("image capture")
 	img_counter = 0
 	while True:
