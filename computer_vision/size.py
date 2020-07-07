@@ -8,6 +8,7 @@ from PIL import Image
 from io import BytesIO
 import cv2
 import numpy as np
+import config_own
 
 # # cpature image by cv2
 cam = cv2.VideoCapture(0)
@@ -51,7 +52,7 @@ else:
 analyze_url = endpoint + "vision/v3.0/analyze"
 
 # Set image_path
-image_dir = "C:\\Users\\v-yhsiao\\Documents\\code\\old_shoes\\computer_vision\\"
+image_dir = config_own.IMG_DIR
 image_path = image_dir + "opencv_frameshot_0.jpg"
 
 # Read the image into a byte array
@@ -72,6 +73,6 @@ base = os.path.basename(image_path)
 file_name = os.path.splitext(base)[0]
 
 # write into the JSON file
-JSON_dir = "C:\\Users\\v-yhsiao\\Documents\\code\\old_shoes\\computer_vision\\JSON_file\\"
+JSON_dir = config_own.JSON_DIR
 with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
     json.dump(analysis, f, ensure_ascii=False, indent=4)

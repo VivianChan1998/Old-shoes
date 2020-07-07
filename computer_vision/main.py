@@ -6,6 +6,8 @@ import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
+#from config import MY_PATH
+import config_own
 
 # Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
 if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
@@ -23,7 +25,7 @@ else:
 analyze_url = endpoint + "vision/v3.0/analyze"
 
 # Set image_path
-image_path = "C:\\Users\\v-yhsiao\\Documents\\code\\old_shoes\\img\\good_img\\img3.jpg"
+image_path = config_own.IMG_PATH
 
 # Read the image into a byte array
 image_data = open(image_path, "rb").read()
@@ -43,7 +45,7 @@ base = os.path.basename(image_path)
 file_name = os.path.splitext(base)[0]
 
 # write into the JSON file
-JSON_dir = "C:\\Users\\v-yhsiao\\Documents\\code\\old_shoes\\computer_vision\\JSON_file\\"
+JSON_dir = config_own.JSON_DIR
 with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
     json.dump(analysis, f, ensure_ascii=False, indent=4)
 
