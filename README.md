@@ -32,7 +32,7 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
 
 #### install python packages
   ```
-  pip install requests matplotlib pillow
+  pip install requests matplotlib pillow opencv-python
   ```
 
 ### 3. register the Azure portal and set up your own computer vision resource(https://portal.azure.com/)
@@ -52,10 +52,13 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
 
 
 ## Files
-### /main.py
+
+### DIR //computer_vision//
+
+#### /main.py
 main program of the computer vision: to detect the brands of the input img
 
-### /analysis.json
+#### /analysis.json
 the json file to record the returning result of the API detection
 
 

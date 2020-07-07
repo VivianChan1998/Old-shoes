@@ -1,3 +1,4 @@
 #add all the file that we don't wanna push and trace
 /env/
-/img
+/img/*
+/computer_vision/config.py
