@@ -5,6 +5,7 @@ import os
 import time
 import config_own
 import re
+import string
 
 # def fun(match):
 # ...  img_tag = match.group()
@@ -37,20 +38,36 @@ def web_crawling(url, file_amount, log_file):
         if (item and index < photolimit ):
 		    # if there is no "data-src"
             if item.get('data-src') == None:
-                html = requests.get(item.get('src'))
-                print(item.get('src'))
-    			#items_get_str = str(item.get('src'))
-                log_file.write(item.get('src')) # write into the log file
-                log_file.write('\n')
+                if item.get('src') == 'https://ir.ebaystatic.com/rs/v/fxxj3ttftm5ltcqnto1o4baovyl.png':
+                    continue
+                if item.get('src') == 'https://i.ebayimg.com/thumbs/images/g/JrEAAOSwo-RZuDJn/s-l1200.png':
+                    continue
+                if item.get('src') == 'https://i.ebayimg.com/thumbs/images/g/c3MAAOSwi8VZVP3E/s-l150.jpg':
+                    continue
+                else:
+                    img_url_origin = item.get('src')
+                    char = '1600.jpg'
+                    img_url_origin = img_url_origin[:58] + char
+                    html = requests.get(img_url_origin)
+                    print(img_url_origin) 
+                    log_file.write(img_url_origin) # write into the log file
+                    log_file.write('\n')
+                    # html = requests.get(item.get('src'))
+                    # print(item.get('src'))
+                    # log_file.write(item.get('src')) # write into the log file
+                    # log_file.write('\n')
 
-    		# if there is "src"
+    		# if there is "data-src"
             else:
-                html = requests.get(item.get('data-src')) # use 'get' to get photo link path , requests = send request
-                print(item.get('data-src')) 
-                log_file.write(item.get('data-src')) # write into the log file
+                img_url_origin = item.get('data-src')
+                char = '1600.jpg'
+                img_url_origin = img_url_origin[:58] + char
+                html = requests.get(img_url_origin)
+                print(img_url_origin) 
+                log_file.write(img_url_origin) # write into the log file
                 log_file.write('\n')
 
-            img_name = img_storage_dir + str(file_amount) + '0' + str(index + 1) + '.jpg'
+            img_name = img_storage_dir + str(file_amount) + '_' + str(index + 1) + '.jpg'
 
             with open(img_name,'wb') as file: #write in the img by "byte"
                 file.write(html.content)
@@ -58,8 +75,8 @@ def web_crawling(url, file_amount, log_file):
 
             file.close() #close file
 
-            print('%d0%d.jpg processing...' % (file_amount, index + 1))
-            log_file.write('%d0%d.jpg processing...\n' % (file_amount, index + 1))
+            print('%d_%d.jpg processing...' % (file_amount, index + 1))
+            log_file.write('%d_%d.jpg processing...\n' % (file_amount, index + 1))
             time.sleep(1)
 
     log_file.write('=====================================================\n')
@@ -70,7 +87,7 @@ if __name__ == "__main__":
 
 	# open a txt file to record the log info
     log_file_dir = config_own.LOG_FILE
-    log_file = open(log_file_dir + 'log_file.txt', 'w')
+    log_file = open(log_file_dir + 'log_file.txt', 'w', encoding="utf-8")
 
     file_amount = 1
     # import the url file and split lines
