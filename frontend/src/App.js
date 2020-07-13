@@ -1,12 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import ImgInput from './Components/ImgInput';
+import {Switch, Route} from 'react-router-dom'
+import Home from './Container/Home'
+import Upload from './Container/Upload'
 
 function App() {
   return (
     <div className="App">
-      <ImgInput />
+      <Switch>
+        <Route exact path='/'>
+          <Home />
+        </Route>
+        <Route path='/upload'>
+          <Upload />
+        </Route>
+      </Switch>
     </div>
   );
 }

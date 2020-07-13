@@ -1,0 +1,21 @@
+#Home-banner-wrapper h1{
+    font-size: 3rem;
+    color: var(--red);
+}
+
+#Home-banner-wrapper p{
+    font-size: 1.5rem;
+    color: var(--white);
+}
+
+#Home-banner-bg{
+    background-image: url('../img/Home-banner.jpg');
+    position: absolute;
+    z-index: -1;
+    height: 105vh;
+    width: 100vw;
+    margin-top: -10vh;
+    margin-bottom: -10vh;
+    filter: opacity(.8) blur(5px);
+}
+

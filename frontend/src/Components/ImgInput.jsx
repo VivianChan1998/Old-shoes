@@ -1,13 +1,15 @@
 import React from 'react'
 import SearchResult from './SearchResult'
 import DefaultResult from './DefaultResult';
+import './ImgInput.css'
 
 export default class ImgInput extends React.Component{
     constructor(){
         super()
         this.state={
             tags: [[]],
-            default: []
+            default: [],
+            fileName: ''
         }
         this.fileInput = React.createRef();
     }
@@ -41,15 +43,28 @@ export default class ImgInput extends React.Component{
         this.setState({tags: data.tags, default: data.tags[0]['actions'][0].data.value})
     }
 
+    handleImageName(){
+        var fullPath = document.getElementById('uploadImage').value;
+        if (fullPath) {
+            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+            var filename = fullPath.substring(startIndex);
+            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+                filename = filename.substring(1);
+            }
+            this.setState({fileName: filename})
+        }
+    }
+
     render(){
         console.log(this.state)
         return(
             <div>
-                <p>Select image to get insights from Bing:
+                <label id='file-input-wrapper'>
+                    {this.state.fileName===''? "+ Upload file" : this.state.fileName}
                     <input type="file" accept="image/*" id="uploadImage" name="files[]" size={40}
-                        ref={ref => this.fileInput = ref} onChange={()=>console.log(this.fileInput)}/>
-                </p>
-                <button onClick={()=>this.handleSubmit()}>
+                        ref={ref => this.fileInput = ref} onChange={() => this.handleImageName()}/>
+                </label>
+                <button id='submit-upload-image' onClick={()=>this.handleSubmit()}>
                     Submit
                 </button>
                 <div>
