@@ -5,11 +5,12 @@ const port = process.env.PORT || 3000
 
 const key = '91c59bd9b23c40248d54ffa568c0c33a'
 
-const config = require('./db-config')
+const uniqueFilename = require('unique-filename')
 const cors = require('cors');
 const multer = require('multer');
 const path = require("path");
 const fs = require('fs')
+const download = require('download')
 
 app.use(cors());
 app.use(express.static(__dirname + '/public'));
@@ -33,12 +34,37 @@ app.get('/python', (req, res) => {
     });
 })
 
+
+function dataURLtoFile(dataurl) {
+  var matches = dataurl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+  response = {};
+ 
+  if (matches.length !== 3) {
+    return new Error('Invalid input string');
+  }
+
+  response.type = matches[1];
+  response.data = Buffer.from(matches[2], 'base64');
+
+  return response;
+ }
+ 
+ 
+app.post('/recieve-img-url', (req, res) => {
+  var file = dataURLtoFile(req.body.file);
+  var filename = uniqueFilename("./temp/", "img")　+ '.jpg'
+  var targetPath = path.join(__dirname, filename)
+  fs.writeFile(targetPath, file.data, err => {if(err) console.log(err)});
+  res.send({success: 'ok'})
+})
+ 
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-      cb(null, './temp/')
+    cb(null, './temp/')
   },
   filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+    cb(null, file.fieldname + '-' + Date.now() + '.jpg')
 }
 })
 
@@ -46,12 +72,13 @@ const upload = multer({
   storage: storage
 });
 
+
 app.post('/recieve-img', upload.single("file"),
 (req, res) => {
   const f = req.files[0]
   const tempPath = f.path;
-  const targetPath = path.join(__dirname, "./temp/image.jpg");
-  console.log(targetPath)
+  var filename = uniqueFilename("./temp/", "img")　+ '.jpg'
+  const targetPath = path.join(__dirname, filename);
 
   if (path.extname(f.originalname).toLowerCase() === ".jpg") {
     fs.rename(tempPath, targetPath, err => {

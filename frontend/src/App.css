@@ -8,3 +8,19 @@
   --white: #E4DFDA;
   --blue: #48A9A6;
 }
+
+.green-button{
+  display: block;
+  height: 5vh;
+  margin: auto;
+  padding: 1vh 5vw 1vh 5vw;
+  border: none;
+  border-radius: 3px;
+  color: var(--white);
+  background-color: var(--blue);
+  cursor: pointer;
+}
+
+.capture-button{
+  margin: 2vh auto 5vh auto;
+}

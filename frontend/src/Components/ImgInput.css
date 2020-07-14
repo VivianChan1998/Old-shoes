@@ -24,3 +24,26 @@ input[type='file']{
     border: none;
     border-radius: 3px;
 }
+
+#upload-wrapper{
+    width: 100vw;
+    margin: 5vh 0 2vh 0;
+}
+
+#camera-wrapper{
+    width: 100vw;
+    justify-content: center;
+}
+
+#preview-photo{
+    box-sizing: border-box;
+    height: 600px;
+    width: 800px;
+    margin: auto;
+}
+
+#no-photo{
+    border: 3px dotted gray;
+    height: 100%;
+    width: 100%;
+}

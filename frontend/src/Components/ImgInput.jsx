@@ -1,27 +1,69 @@
 import React from 'react'
 import SearchResult from './SearchResult'
 import DefaultResult from './DefaultResult';
+import Camera from '../Components/Camera'
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 import './ImgInput.css'
 
+class Crop extends React.Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            src: null,
+            crop: {
+              width: 800,
+              height: 600
+            },
+        };
+    }
+    
+    render(){
+        return(
+            <div>
+                <ReactCrop src={this.props.src} crop={this.state.crop} />
+            </div>
+            
+        )
+    }
+}
 export default class ImgInput extends React.Component{
     constructor(){
         super()
         this.state={
             tags: [[]],
             default: [],
-            fileName: ''
+            srcType: '',
+            srcURL: '',
+            src: ''
         }
         this.fileInput = React.createRef();
     }
+    async handleSubmit(){
+        var form = new FormData()
+        console.log(this.state)
+        
+        form.append("file", this.state.src)
+        const settings = {
+            method: 'POST',
+            body: form,
+        }
+        var url = this.state.srcType === 'photo' ? 'http://localhost:3000/recieve-img-url' : 'http://localhost:3000/recieve-img'
+        let res = await fetch(url, settings)
+        let data = await res.json()
+        console.log(data)
+    }
+    /*
     handleSubmit(){
         var subscriptionKey = '91c59bd9b23c40248d54ffa568c0c33a';
+        console.log(this.fileInput)
         var imagePath = this.fileInput;
         if (imagePath.length === 0)
         {
             alert("Please select an image to upload.");
             return;
         }
-        var f = document.getElementById('uploadImage').files[0];
+        var f = this.state.src;
         this.sendRequest(f, subscriptionKey);
     }
     async sendRequest(file, key) {
@@ -40,30 +82,57 @@ export default class ImgInput extends React.Component{
 
         const res = await fetch(baseUrl, settings)
         const data = await res.json()
-        this.setState({tags: data.tags, default: data.tags[0]['actions'][0].data.value})
+        console.log(data)
+        //this.setState({tags: data.tags, default: data.tags[0]['actions'][0].data.value})
     }
-
+    */
     handleImageName(){
-        var fullPath = document.getElementById('uploadImage').value;
+        /*var fullPath = document.getElementById('uploadImage').value;
         if (fullPath) {
             var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
             var filename = fullPath.substring(startIndex);
             if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
                 filename = filename.substring(1);
             }
-            this.setState({fileName: filename})
-        }
+            
+        }*/
+        var f = document.getElementById('uploadImage').files[0]
+        this.setState({
+            srcURL: URL.createObjectURL(f),
+            src: f,
+            srcType: 'upload'
+        })
     }
 
     render(){
-        console.log(this.state)
         return(
             <div>
-                <label id='file-input-wrapper'>
-                    {this.state.fileName===''? "+ Upload file" : this.state.fileName}
-                    <input type="file" accept="image/*" id="uploadImage" name="files[]" size={40}
-                        ref={ref => this.fileInput = ref} onChange={() => this.handleImageName()}/>
-                </label>
+                <div id='preview-photo'>
+                    {this.state.srcURL===''?
+                        <div id='no-photo'><h3>choose a photo</h3></div>
+                        :<img src={this.state.srcURL} />
+                    }
+                </div>
+                {/*<Crop src={this.state.srcURL} />*/}
+                <div id='upload-wrapper'>
+                    <label id='file-input-wrapper'>
+                        Upload file
+                        <input type="file" accept="image/*" id="uploadImage" name="files[]" size={40}
+                            ref={ref => this.fileInput = ref} onChange={() => this.handleImageName()}/>
+                    </label>
+                </div>
+                or
+                <div id='camera-wrapper'>
+                    <Camera getImage={(srcurl, src)=>{
+                        this.setState({
+                            srcURL:srcurl,
+                            src: src,
+                            srcType: 'photo'
+                        })
+                    }}
+                    />
+                </div>
+                
                 <button id='submit-upload-image' onClick={()=>this.handleSubmit()}>
                     Submit
                 </button>
