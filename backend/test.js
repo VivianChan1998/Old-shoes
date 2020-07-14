@@ -18,22 +18,21 @@ app.use(multer({dest: './temp/'}).any());
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
-app.get('/python', (req, res) => {
-    var dataToSend;
-    const python = spawn('python', ['test.py', 'hellllooo']);
+function callPythonCV(filename){
+  var data;
+  const python = spawn('python', ['test.py', filename] ); /* Change python filename here */
 
-    python.stdout.on('data', data => {
-        console.log('Pipe data from python script ...');
-        dataToSend = data.toString();
-    });
+  python.stdout.on('data', data => {
+      console.log('Pipe data from python script ...');
+      data = data.toString();
+      console.log(data)
+  });
 
-    python.on('close', (code) => {
-        console.log(`child process close all stdio with code ${code}`);
-        // send data to browser
-        res.send(dataToSend)
-    });
-})
-
+  python.on('close', (code) => {
+      console.log(`child process close all stdio with code ${code}`);
+      return data
+  });
+}
 
 function dataURLtoFile(dataurl) {
   var matches = dataurl.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
@@ -55,6 +54,8 @@ app.post('/recieve-img-url', (req, res) => {
   var filename = uniqueFilename("./temp/", "img")　+ '.jpg'
   var targetPath = path.join(__dirname, filename)
   fs.writeFile(targetPath, file.data, err => {if(err) console.log(err)});
+  console.log(`filename ${filename}`)
+  callPythonCV(filename)
   res.send({success: 'ok'})
 })
  
@@ -97,8 +98,10 @@ app.post('/recieve-img', upload.single("file"),
         .end("Only .png files are allowed!");
     });
   }
-  
-  res.send({success: 'go'})
+
+  console.log(`filename ${filename}`)
+  callPythonCV(filename)
+  res.send({success: 'ok'})
 }
 )
 
