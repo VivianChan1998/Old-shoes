@@ -4,3 +4,6 @@
 /computer_vision/config_own.py
 /computer_vision/__pycache__
 /computer_vision/JSON_file
+/computer_vision/Training/config_own.py
+/computer_vision/Training/__pycache__
+/computer_vision/Training/log_train

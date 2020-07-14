@@ -75,5 +75,14 @@ main program of the computer vision: to detect the brands of the input img
 #### /size.py
 take a picture by webcam and analysize the output image
 
+#### DIR //Training//
+put all the files needed during the training process
+
+### /img_rename.py
+rename all the image data after classification and before training
+
 
 ## Libraries
+
+## Reference
+### Data Training: https://github.com/fendouai/FaceRank
