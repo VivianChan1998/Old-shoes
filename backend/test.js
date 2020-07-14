@@ -1,24 +1,19 @@
 const express = require('express')
 const {spawn} = require('child_process');
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 const key = '91c59bd9b23c40248d54ffa568c0c33a'
 
-const CosmosClient = require('@azure/cosmos').CosmosClient
-
 const config = require('./db-config')
-const url = require('url');
-const { query } = require('express');
+const cors = require('cors');
+const multer = require('multer');
+const path = require("path");
+const fs = require('fs')
 
-const endpoint = config.endpoint
-const dbkey = config.key
-
-const databaseId = config.database.id
-const containerId = config.container.id
-const partitionKey = { kind: 'Hash', paths: ['/Country'] }
-
-const client = new CosmosClient(endpoint)
+app.use(cors());
+app.use(express.static(__dirname + '/public'));
+app.use(multer({dest: './temp/'}).any());
 
 app.get('/', (req, res) => res.send('Hello World!'))
 
@@ -38,39 +33,46 @@ app.get('/python', (req, res) => {
     });
 })
 
-async function queryContainer() {
-    console.log(`Querying container:\n${config.container.id}`)
-  
-    // query to return all children in a family
-    // Including the partition key value of lastName in the WHERE filter results in a more efficient query
-    const querySpec = {
-      query: 'SELECT VALUE r.children FROM root r WHERE r.lastName = @lastName',
-      parameters: [
-        {
-          name: '@lastName',
-          value: 'Andersen'
-        }
-      ]
-    }
-  
-    const { resources: results } = await client
-      .database(databaseId)
-      .container(containerId)
-      .items.query(querySpec)
-      .fetchAll()
-    for (var queryResult of results) {
-      let resultString = JSON.stringify(queryResult)
-      console.log(`\tQuery returned ${resultString}\n`)
-    }
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+      cb(null, './temp/')
+  },
+  filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + '.jpg')
 }
-
-app.get('/query-test', (req, res) => {
-    console.log('startQuery')
-    queryContainer()
-        .catch(err => console.log(err))
-    console.log('endQuery')
-    res.send('success')
 })
 
+const upload = multer({
+  storage: storage
+});
+
+app.post('/recieve-img', upload.single("file"),
+(req, res) => {
+  const f = req.files[0]
+  const tempPath = f.path;
+  const targetPath = path.join(__dirname, "./temp/image.jpg");
+  console.log(targetPath)
+
+  if (path.extname(f.originalname).toLowerCase() === ".jpg") {
+    fs.rename(tempPath, targetPath, err => {
+      if (err) return handleError(err, res);
+
+      res
+        .status(200)
+        .end("File uploaded!");
+    });
+  } else {
+    fs.unlink(tempPath, err => {
+      if (err) return handleError(err, res);
+
+      res
+        .status(403)
+        .end("Only .png files are allowed!");
+    });
+  }
+  
+  res.send({success: 'go'})
+}
+)
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
