@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from PIL import Image
 import numpy
-# import tensorflow as tf
+import tensorflow as tf
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import config_own
@@ -35,7 +35,7 @@ display_step = 3
 
 # Network Parameters
 n_input = 128*128 # MNIST data input (img shape: 128*128 )
-n_classes = 3 # MNIST total classes (0-9 digits)
+n_classes = 10 # MNIST total classes (0-9 digits)
 dropout = 0.75 # Dropout, probability to keep units
 
 # tf Graph input
@@ -94,15 +94,15 @@ weights = {
     # 5x5 conv, 24 inputs, 96 outputs
     'wc2': tf.Variable(tf.random_normal([5, 5, 24, 96])),
     # fully connected, 32*32*96 inputs, 1024 outputs
-    'wd1': tf.Variable(tf.random_normal([32*32*96, 8])),
+    'wd1': tf.Variable(tf.random_normal([32*32*96, 1024])),##############################################################
     # 1024 inputs, 10 outputs (class prediction)
-    'out': tf.Variable(tf.random_normal([8, n_classes]))###############################################################
+    'out': tf.Variable(tf.random_normal([1024, n_classes]))###############################################################
 }
 
 biases = {
     'bc1': tf.Variable(tf.random_normal([24])),
     'bc2': tf.Variable(tf.random_normal([96])),
-    'bd1': tf.Variable(tf.random_normal([8])),###################################################################################
+    'bd1': tf.Variable(tf.random_normal([1024])),###################################################################################
     'out': tf.Variable(tf.random_normal([n_classes]))
 }
 
@@ -131,7 +131,7 @@ with tf.Session() as sess:
     print(list)
     print(len(list))
     count=0
-    while count<189:
+    while count<10:
         count = count+1
         print("count:",count)
         for batch_id in range(0, 12):
@@ -149,11 +149,11 @@ with tf.Session() as sess:
                 batch_x = img_ndarray
                 batch_xs.append(batch_x)
                 # print(batch_xs)
-                batch_y = numpy.asarray([0, 0, 0])#######################################################
+                batch_y = numpy.asarray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])#######################################################
                 # print(type(score))
                 batch_y[int(score) - 1] = 1
                 # print(batch_y)
-                batch_y = numpy.reshape(batch_y, [3, ])######################################################
+                batch_y = numpy.reshape(batch_y, [10, ])######################################################
                 batch_ys.append(batch_y)
             # print(batch_ys)
             batch_xs = numpy.asarray(batch_xs)

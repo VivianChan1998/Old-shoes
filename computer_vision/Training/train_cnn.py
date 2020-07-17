@@ -46,7 +46,7 @@ fpaths, datas, labels = read_data(data_dir)
 num_classes = len(set(labels))
 
 # define placeholder
-datas_placeholder = tf.placeholder(tf.float32, [None, 256, 256, 3])#################################
+datas_placeholder = tf.placeholder(tf.float32, [None, 128, 128, 3])#################################
 labels_placeholder = tf.placeholder(tf.int32, [None])
 
 # container of Dropout, 0.25 when training and 0 when evaluate
@@ -107,7 +107,7 @@ with tf.Session() as sess:
             labels_placeholder: labels,
             dropout_placeholdr: 0.25
         }
-        for step in range(150):
+        for step in range(2000):
             _, mean_loss_val = sess.run([optimizer, mean_loss], feed_dict=train_feed_dict)
 
             if step % 10 == 0:
