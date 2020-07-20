@@ -53,16 +53,16 @@ def img_processing():
     with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
         json.dump(analysis, f, ensure_ascii=False, indent=4)
 
-    # set the show title on the image window
-    image_caption = analysis["brands"][0]["name"].capitalize()
-    #print(image_caption)
 
-    # Display the image and overlay it with the caption.
-    image = Image.open(BytesIO(image_data))
-    plt.imshow(image)
-    plt.axis("off")
-    _ = plt.title(image_caption, size="x-large", y=-0.1)
-    plt.show()
+    # # set the show title on the image window
+    # image_caption = analysis["brands"][0]["name"].capitalize()
+    # #print(image_caption)
+    # # Display the image and overlay it with the caption.
+    # image = Image.open(BytesIO(image_data))
+    # plt.imshow(image)
+    # plt.axis("off")
+    # _ = plt.title(image_caption, size="x-large", y=-0.1)
+    # plt.show()
 
 if __name__ == "__main__":
     img_processing()
