@@ -6,8 +6,9 @@ import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
-import cv2
 import numpy as np
+import logging
+import cv2
 import config_own
 
 def shot_cv2():
@@ -91,13 +92,13 @@ def img_transfer_json(endpoint):
 			base = os.path.basename(image_path)
 			file_name = os.path.splitext(base)[0]
 
-			# # write into the JSON file
-			# JSON_dir = config_own.JSON_DIR
-			# with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
-			#     json.dump(analysis, f, ensure_ascii=False, indent=4)
+			# write into the JSON file
+			JSON_dir = config_own.JSON_DIR
+			with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
+			    json.dump(analysis, f, ensure_ascii=False, indent=4)
 
-			# k = cv2.waitKey(1)
-			# img_counter += 1
+			k = cv2.waitKey(1)
+			img_counter += 1
 
 			# return value: coin's width & object's width
 			return analysis
@@ -125,11 +126,17 @@ def scaling(input_json):
 
 
 if __name__ == "__main__":
-	# load the needed keys
-	subscription_key = sys.argv[1] #####################################
-	endpoint = sys.argv[2] #####################################
 
-	shot_cv2() # take pics #####################################################
-	input_json = img_transfer_json(endpoint)
-	obj_scale = scaling(input_json)
-	print( "{} mm".format(obj_scale))
+	try:
+		# load the needed keys
+		subscription_key = sys.argv[1] #####################################
+		endpoint = sys.argv[2] #####################################
+
+		shot_cv2() # take pics #####################################################
+		input_json = img_transfer_json(endpoint)
+		obj_scale = scaling(input_json)
+		print( "{} mm".format(obj_scale))
+
+
+	except:
+		logging.exception("Message")

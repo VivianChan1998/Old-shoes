@@ -69,5 +69,5 @@ if __name__ == "__main__":
     try:
         img_processing()
     except:
-        logging.exception("Message")
+        print(logging.exception("Message"))
         print("Program accidentally exit")
