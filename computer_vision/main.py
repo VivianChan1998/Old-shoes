@@ -10,21 +10,26 @@ from io import BytesIO
 import config_own
 
 def img_processing():
-    # Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
-    if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
-        subscription_key = os.environ['COMPUTER_VISION_SUBSCRIPTION_KEY']
-    else:
-        print("\nSet the COMPUTER_VISION_SUBSCRIPTION_KEY environment variable.\n**Restart your shell or IDE for changes to take effect.**")
-        sys.exit()
-    if 'COMPUTER_VISION_ENDPOINT' in os.environ:
-        endpoint = os.environ['COMPUTER_VISION_ENDPOINT']
-    else:
-        print("\nSet the COMPUTER_VISION_ENDPOINT environment variable.\n**Restart your shell or IDE for changes to take effect.**")
-        sys.exit()
+    # # Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
+    # if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
+    #     subscription_key = os.environ['COMPUTER_VISION_SUBSCRIPTION_KEY']
+    # else:
+    #     print("\nSet the COMPUTER_VISION_SUBSCRIPTION_KEY environment variable.\n**Restart your shell or IDE for changes to take effect.**")
+    #     sys.exit()
+    # if 'COMPUTER_VISION_ENDPOINT' in os.environ:
+    #     endpoint = os.environ['COMPUTER_VISION_ENDPOINT']
+    # else:
+    #     print("\nSet the COMPUTER_VISION_ENDPOINT environment variable.\n**Restart your shell or IDE for changes to take effect.**")
+    #     sys.exit()
+    
+    subscription_key = sys.argv[1]
+    endpoint = sys.argv[2]
+
     analyze_url = endpoint + "vision/v3.0/analyze"
 
     # Set image_path
-    image_path = config_own.IMG_PATH
+    image_path = config_own.IMG_PATH ###################################################################
+    # image_path = sys.argv[1]
 
     # Read the image into a byte array
     image_data = open(image_path, "rb").read()
@@ -37,14 +42,14 @@ def img_processing():
 
     # Description of the image
     analysis = response.json() # the JSON return value of the image
-    print(analysis) 
+    print(analysis) ######## this is what frontend exactly need (??? #########
 
     # split the image name to rename the JSON file
     base = os.path.basename(image_path)
     file_name = os.path.splitext(base)[0]
 
     # write into the JSON file
-    JSON_dir = config_own.JSON_DIR
+    JSON_dir = config_own.JSON_DIR #####################################
     with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
         json.dump(analysis, f, ensure_ascii=False, indent=4)
 
