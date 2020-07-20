@@ -3,6 +3,7 @@ import SearchResult from './SearchResult'
 import DefaultResult from './DefaultResult';
 import Camera from '../Components/Camera'
 import ReactCrop from 'react-image-crop';
+import { Modal } from 'office-ui-fabric-react'
 import 'react-image-crop/dist/ReactCrop.css';
 import './ImgInput.css'
 
@@ -35,7 +36,8 @@ export default class ImgInput extends React.Component{
             default: [],
             srcType: '',
             srcURL: '',
-            src: ''
+            src: '',
+            isModalOpen: false
         }
         this.fileInput = React.createRef();
     }
@@ -107,33 +109,56 @@ export default class ImgInput extends React.Component{
     render(){
         return(
             <div>
+                
+                {/*<Crop src={this.state.srcURL} />*/}
+                <div className='upload-section'>
+                    <div id='upload-wrapper'>
+                        <label id='file-input-wrapper'>
+                            Upload file
+                            <input type="file" accept="image/*" id="uploadImage" name="files[]" size={40}
+                                ref={ref => this.fileInput = ref} onChange={() => this.handleImageName()}/>
+                        </label>
+                    </div>
+                    <div id='or'>or</div>
+                    <div>
+                        <button onClick={() => this.setState({isModalOpen: true})} className="green-button">
+                            Take a Photo
+                        </button>
+                    </div>
+                </div>
+                
+                <Modal
+                    titleAriaId='LoginModal'
+                    isOpen={this.state.isModalOpen}
+                    onDismiss={() => this.setState({isModalOpen: false})}
+                    isBlocking={false}
+                    containerClassName={''}
+                >
+                    <div id='camera-wrapper'>
+                        <Camera getImage={(srcurl, src)=>{
+                            this.setState({
+                                srcURL:srcurl,
+                                src: src,
+                                srcType: 'photo',
+                                isModalOpen: false
+                            })
+                        }}
+                        />
+                    </div>
+                </Modal>
+               
+
                 <div id='preview-photo'>
                     {this.state.srcURL===''?
-                        <div id='no-photo'><h3>choose a photo</h3></div>
+                        <div id='no-photo'>
+                            <h3>Upload your photo, show us your shoes</h3>
+                            <div />
+                        </div>
                         :<img src={this.state.srcURL} />
                     }
                 </div>
-                {/*<Crop src={this.state.srcURL} />*/}
-                <div id='upload-wrapper'>
-                    <label id='file-input-wrapper'>
-                        Upload file
-                        <input type="file" accept="image/*" id="uploadImage" name="files[]" size={40}
-                            ref={ref => this.fileInput = ref} onChange={() => this.handleImageName()}/>
-                    </label>
-                </div>
-                or
-                <div id='camera-wrapper'>
-                    <Camera getImage={(srcurl, src)=>{
-                        this.setState({
-                            srcURL:srcurl,
-                            src: src,
-                            srcType: 'photo'
-                        })
-                    }}
-                    />
-                </div>
                 
-                <button id='submit-upload-image' onClick={()=>this.handleSubmit()}>
+                <button className={this.state.src? 'submit-upload-image green-button' : 'submit-upload-image submit-disable'} onClick={()=>this.handleSubmit()}>
                     Submit
                 </button>
                 <div>

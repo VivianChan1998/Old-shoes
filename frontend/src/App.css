@@ -16,10 +16,11 @@
   padding: 1vh 5vw 1vh 5vw;
   border: none;
   border-radius: 3px;
-  color: var(--white);
+  color: white;
   background-color: var(--blue);
   cursor: pointer;
 }
+
 
 .capture-button{
   margin: 2vh auto 5vh auto;
