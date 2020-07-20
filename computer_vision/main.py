@@ -8,6 +8,7 @@ from PIL import Image
 from io import BytesIO
 #from config import MY_PATH
 import config_own
+import logging
 
 def img_processing():
     # # Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
@@ -65,4 +66,8 @@ def img_processing():
     # plt.show()
 
 if __name__ == "__main__":
-    img_processing()
+    try:
+        img_processing()
+    except:
+        logging.exception("Message")
+        print("Program accidentally exit")
