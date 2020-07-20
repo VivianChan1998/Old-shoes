@@ -119,6 +119,11 @@ def scaling(input_json):
 	return main_obj_scale
 
 
+######### TO-DO ##########
+### 台灣/歐/美/日 各式尺寸轉換 ###
+#def scaling_type_transform():
+
+
 if __name__ == "__main__":
 	shot_cv2()
 	input_json = img_transfer_json()
