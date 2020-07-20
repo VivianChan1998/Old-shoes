@@ -10,7 +10,6 @@ import cv2
 import numpy as np
 import config_own
 
-
 def shot_cv2():
 	# set the img storage path
 	img_path = config_own.SHOT_CV2_DIR
@@ -50,20 +49,20 @@ def shot_cv2():
 # def img_warping():
 
 
-def img_transfer_json():
+def img_transfer_json(endpoint):
 	img_counter = 0
-	# Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
-	if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
-	    subscription_key = os.environ['COMPUTER_VISION_SUBSCRIPTION_KEY']
-	else:
-	    print("\nSet the COMPUTER_VISION_SUBSCRIPTION_KEY environment variable.\n**Restart your shell or IDE for changes to take effect.**")
-	    sys.exit()
+	# # Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
+	# if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
+	#     subscription_key = os.environ['COMPUTER_VISION_SUBSCRIPTION_KEY']
+	# else:
+	#     print("\nSet the COMPUTER_VISION_SUBSCRIPTION_KEY environment variable.\n**Restart your shell or IDE for changes to take effect.**")
+	#     sys.exit()
 
-	if 'COMPUTER_VISION_ENDPOINT' in os.environ:
-	    endpoint = os.environ['COMPUTER_VISION_ENDPOINT']
-	else:
-	    print("\nSet the COMPUTER_VISION_ENDPOINT environment variable.\n**Restart your shell or IDE for changes to take effect.**")
-	    sys.exit()
+	# if 'COMPUTER_VISION_ENDPOINT' in os.environ:
+	#     endpoint = os.environ['COMPUTER_VISION_ENDPOINT']
+	# else:
+	#     print("\nSet the COMPUTER_VISION_ENDPOINT environment variable.\n**Restart your shell or IDE for changes to take effect.**")
+	#     sys.exit()
 
 	analyze_url = endpoint + "vision/v3.0/analyze"
 
@@ -73,6 +72,7 @@ def img_transfer_json():
 			image_dir = config_own.SHOT_CV2_DIR
 			image_name = "opencv_frameshot_{}.jpg".format(img_counter)
 			image_path = image_dir + image_name
+			# image_path = sys.argv[1] ###################################
 
 			# Read the image into a byte array
 			image_data = open(image_path, "rb").read()
@@ -91,13 +91,13 @@ def img_transfer_json():
 			base = os.path.basename(image_path)
 			file_name = os.path.splitext(base)[0]
 
-			# write into the JSON file
-			JSON_dir = config_own.JSON_DIR
-			with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
-			    json.dump(analysis, f, ensure_ascii=False, indent=4)
+			# # write into the JSON file
+			# JSON_dir = config_own.JSON_DIR
+			# with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
+			#     json.dump(analysis, f, ensure_ascii=False, indent=4)
 
-			k = cv2.waitKey(1)
-			img_counter += 1
+			# k = cv2.waitKey(1)
+			# img_counter += 1
 
 			# return value: coin's width & object's width
 			return analysis
@@ -125,8 +125,11 @@ def scaling(input_json):
 
 
 if __name__ == "__main__":
-	shot_cv2()
-	input_json = img_transfer_json()
-	img_transfer_json()
+	# load the needed keys
+	subscription_key = sys.argv[1] #####################################
+	endpoint = sys.argv[2] #####################################
+
+	shot_cv2() # take pics #####################################################
+	input_json = img_transfer_json(endpoint)
 	obj_scale = scaling(input_json)
-	print(obj_scale)
+	print( "{} mm".format(obj_scale))
