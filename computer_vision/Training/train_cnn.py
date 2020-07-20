@@ -1,18 +1,19 @@
 #coding=utf-8
 
 import os
+os.environ["NVIDIA_VISIBLE_DEVICES"] = "0000:02:00.0"
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 from PIL import Image
 import numpy as np
 import tensorflow as tf
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import config_own
+import sys
 
 # open a file to record the training process
 log_file_dir = config_own.LOG_FILE
 log_file = open(log_file_dir + 'log_file.txt', 'w', encoding="utf-8")
-
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 # data dir
 # data_dir = "data"
@@ -101,8 +102,59 @@ optimizer = tf.train.AdamOptimizer(learning_rate=1e-2).minimize(losses)
 # use to store and load the model
 saver = tf.train.Saver()
 
-# use GPU to speed up the training process
-# with tf.device('/job:localhost/replica:0/task:0/device:GPU:1'):
+# # use GPU to speed up the training process
+# with tf.device('/device:XLA_GPU:0'):
+#     with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
+#         if train:
+#             print("Train mode")
+#             log_file.write("Train mode\n")
+
+#             # if train mode = true, then init the parameter
+#             sess.run(tf.global_variables_initializer())
+#             # define import and label to fill the container, dropout = 0.25 when training
+#             train_feed_dict = {
+#                 datas_placeholder: datas,
+#                 labels_placeholder: labels,
+#                 dropout_placeholdr: 0.25
+#             }
+#             for step in range(100):
+#                 _, mean_loss_val = sess.run([optimizer, mean_loss], feed_dict=train_feed_dict)
+
+#                 if step % 10 == 0:
+#                     print("step = {}\tmean loss = {}".format(step, mean_loss_val))
+#                     log_file.write("step = {}\tmean loss = {}\n".format(step, mean_loss_val))
+#             saver.save(sess, model_path)
+#             print("Done training，store the model to {}".format(model_path))
+#             log_file.write("Done training，store the model to {}\n".format(model_path))
+#         else:
+#             print("Test mode")
+#             log_file.write("Test mode\n")
+
+#             # load the parameter if it is evaluation
+#             saver.restore(sess, model_path)
+#             print("from {} import model".format(model_path))
+#             log_file.write("from {} import model\n".format(model_path))
+
+#             # label and name
+#             label_name_dict = {
+#                 0: "old",
+#                 1: "nearly old",
+#                 2: "almost new"
+#             }
+#             # define the import and Label to fulfill the container, dropout = 0 when evaluate
+#             test_feed_dict = {
+#                 datas_placeholder: datas,
+#                 labels_placeholder: labels,
+#                 dropout_placeholdr: 0
+#             }
+#             predicted_labels_val = sess.run(predicted_labels, feed_dict=test_feed_dict)
+#             # real label and model's prediction
+#             for fpath, real_label, predicted_label in zip(fpaths, labels, predicted_labels_val):
+#                 # transfer the label id into label name
+#                 real_label_name = label_name_dict[real_label]
+#                 predicted_label_name = label_name_dict[predicted_label]
+#                 print("{}\t{} => {}".format(fpath, real_label_name, predicted_label_name))
+#                 log_file.write("{}\t{} => {}\n".format(fpath, real_label_name, predicted_label_name))
 with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
     if train:
         print("Train mode")
@@ -116,7 +168,7 @@ with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
             labels_placeholder: labels,
             dropout_placeholdr: 0.25
         }
-        for step in range(2000):
+        for step in range(100):
             _, mean_loss_val = sess.run([optimizer, mean_loss], feed_dict=train_feed_dict)
 
             if step % 10 == 0:
