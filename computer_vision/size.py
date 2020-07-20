@@ -6,10 +6,10 @@ import requests
 import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
-import cv2
 import numpy as np
+import logging
+import cv2
 import config_own
-
 
 def shot_cv2():
 	# set the img storage path
@@ -50,20 +50,20 @@ def shot_cv2():
 # def img_warping():
 
 
-def img_transfer_json():
+def img_transfer_json(endpoint):
 	img_counter = 0
-	# Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
-	if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
-	    subscription_key = os.environ['COMPUTER_VISION_SUBSCRIPTION_KEY']
-	else:
-	    print("\nSet the COMPUTER_VISION_SUBSCRIPTION_KEY environment variable.\n**Restart your shell or IDE for changes to take effect.**")
-	    sys.exit()
+	# # Set the COMPUTER_SUBSCRIPTION_KEY & COMPUTER_VISION_ENDPOINT
+	# if 'COMPUTER_VISION_SUBSCRIPTION_KEY' in os.environ:
+	#     subscription_key = os.environ['COMPUTER_VISION_SUBSCRIPTION_KEY']
+	# else:
+	#     print("\nSet the COMPUTER_VISION_SUBSCRIPTION_KEY environment variable.\n**Restart your shell or IDE for changes to take effect.**")
+	#     sys.exit()
 
-	if 'COMPUTER_VISION_ENDPOINT' in os.environ:
-	    endpoint = os.environ['COMPUTER_VISION_ENDPOINT']
-	else:
-	    print("\nSet the COMPUTER_VISION_ENDPOINT environment variable.\n**Restart your shell or IDE for changes to take effect.**")
-	    sys.exit()
+	# if 'COMPUTER_VISION_ENDPOINT' in os.environ:
+	#     endpoint = os.environ['COMPUTER_VISION_ENDPOINT']
+	# else:
+	#     print("\nSet the COMPUTER_VISION_ENDPOINT environment variable.\n**Restart your shell or IDE for changes to take effect.**")
+	#     sys.exit()
 
 	analyze_url = endpoint + "vision/v3.0/analyze"
 
@@ -73,6 +73,7 @@ def img_transfer_json():
 			image_dir = config_own.SHOT_CV2_DIR
 			image_name = "opencv_frameshot_{}.jpg".format(img_counter)
 			image_path = image_dir + image_name
+			# image_path = sys.argv[1] ###################################
 
 			# Read the image into a byte array
 			image_data = open(image_path, "rb").read()
@@ -119,9 +120,23 @@ def scaling(input_json):
 	return main_obj_scale
 
 
+######### TO-DO ##########
+### 台灣/歐/美/日 各式尺寸轉換 ###
+#def scaling_type_transform():
+
+
 if __name__ == "__main__":
-	shot_cv2()
-	input_json = img_transfer_json()
-	img_transfer_json()
-	obj_scale = scaling(input_json)
-	print(obj_scale)
+
+	try:
+		# load the needed keys
+		subscription_key = sys.argv[1] #####################################
+		endpoint = sys.argv[2] #####################################
+
+		shot_cv2() # take pics #####################################################
+		input_json = img_transfer_json(endpoint)
+		obj_scale = scaling(input_json)
+		print( "{} mm".format(obj_scale))
+
+
+	except:
+		logging.exception("Message")
