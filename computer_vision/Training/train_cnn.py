@@ -3,17 +3,23 @@
 import os
 from PIL import Image
 import numpy as np
-# import tensorflow as tf
+import tensorflow as tf
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import config_own
+
+# open a file to record the training process
+log_file_dir = config_own.LOG_FILE
+log_file = open(log_file_dir + 'log_file.txt', 'w', encoding="utf-8")
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 # data dir
 # data_dir = "data"
 data_dir = config_own.AFTER_RESIZE_DIR
 
 # train or evaluate
-train = True
+train = False
 
 # model dir
 # model_path = "model/image_model"
@@ -37,6 +43,7 @@ def read_data(data_dir):
     labels = np.array(labels)
 
     print("shape of datas: {}\tshape of labels: {}".format(datas.shape, labels.shape))
+    log_file.write("shape of datas: {}\tshape of labels: {}\n".format(datas.shape, labels.shape))
     return fpaths, datas, labels
 
 
@@ -94,10 +101,12 @@ optimizer = tf.train.AdamOptimizer(learning_rate=1e-2).minimize(losses)
 # use to store and load the model
 saver = tf.train.Saver()
 
-with tf.Session() as sess:
-
+# use GPU to speed up the training process
+# with tf.device('/job:localhost/replica:0/task:0/device:GPU:1'):
+with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
     if train:
         print("Train mode")
+        log_file.write("Train mode\n")
 
         # if train mode = true, then init the parameter
         sess.run(tf.global_variables_initializer())
@@ -112,14 +121,18 @@ with tf.Session() as sess:
 
             if step % 10 == 0:
                 print("step = {}\tmean loss = {}".format(step, mean_loss_val))
+                log_file.write("step = {}\tmean loss = {}\n".format(step, mean_loss_val))
         saver.save(sess, model_path)
         print("Done training，store the model to {}".format(model_path))
+        log_file.write("Done training，store the model to {}\n".format(model_path))
     else:
         print("Test mode")
+        log_file.write("Test mode\n")
 
         # load the parameter if it is evaluation
         saver.restore(sess, model_path)
         print("from {} import model".format(model_path))
+        log_file.write("from {} import model\n".format(model_path))
 
         # label and name
         label_name_dict = {
@@ -140,3 +153,7 @@ with tf.Session() as sess:
             real_label_name = label_name_dict[real_label]
             predicted_label_name = label_name_dict[predicted_label]
             print("{}\t{} => {}".format(fpath, real_label_name, predicted_label_name))
+            log_file.write("{}\t{} => {}\n".format(fpath, real_label_name, predicted_label_name))
+
+# close the record file
+log_file.close()

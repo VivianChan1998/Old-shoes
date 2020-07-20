@@ -1,178 +1,224 @@
-'''
-A Convolutional Network implementation example using TensorFlow library.
-This example is using the MNIST database of handwritten digits
-(http://yann.lecun.com/exdb/mnist/)
+#coding=utf-8
 
-Author: Aymeric Damien
-Project: https://github.com/aymericdamien/TensorFlow-Examples/
-'''
-
-from __future__ import print_function
 import os
-import matplotlib.pyplot as plt
-import tensorflow as tf
+# os.environ["CUDA_DEVICE_ORDER"] = "0000:02:00.0"
+os.environ["CUDA_DEVICE_ORDER"] = "00000000:02:00.0"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 from PIL import Image
-import numpy
+import numpy as np
 import tensorflow as tf
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
+# import tensorflow.compat.v1 as tf
+# tf.disable_v2_behavior()
 import config_own
 
-# Import MNIST data
-from tensorflow.examples.tutorials.mnist import input_data
+# open a file to record the training process
+log_file_dir = config_own.LOG_FILE
+log_file = open(log_file_dir + 'log_file.txt', 'w', encoding="utf-8")
 
-# open a txt file to record the log info
-#################################
-# TO-DO
-#################################
+# data dir
+# data_dir = "data"
+data_dir = config_own.AFTER_RESIZE_DIR
 
+# train or evaluate
+train = False
 
-# Parameters
-learning_rate = 0.001
-training_iters = 3000
-batch_size = 10
-display_step = 3
+# model dir
+# model_path = "model/image_model"
+model_path = config_own.CKPT_DIR
 
-# Network Parameters
-n_input = 128*128 # MNIST data input (img shape: 128*128 )
-n_classes = 10 # MNIST total classes (0-9 digits)
-dropout = 0.75 # Dropout, probability to keep units
+# read imgs int the dir 
+def read_data(data_dir):
+    datas = []
+    labels = []
+    fpaths = []
+    for fname in os.listdir(data_dir):
+        fpath = os.path.join(data_dir, fname)
+        fpaths.append(fpath)
+        image = Image.open(fpath)
+        data = np.array(image) / 255.0
+        label = int(fname.split("_")[0])
+        datas.append(data)
+        labels.append(label)
 
-# tf Graph input
-x = tf.placeholder(tf.float32, [None, 128, 128, 3])
-y = tf.placeholder(tf.float32, [None, n_classes])
-keep_prob = tf.placeholder(tf.float32) #dropout (keep probability)
+    datas = np.array(datas)
+    labels = np.array(labels)
 
-
-# Create some wrappers for simplicity
-def conv2d(x, W, b, strides=1):
-    # Conv2D wrapper, with bias and relu activation
-    x = tf.nn.conv2d(x, W, strides=[1, strides, strides, 1], padding='SAME')
-    x = tf.nn.bias_add(x, b)
-    return tf.nn.relu(x)
-
-
-def maxpool2d(x, k=2):
-    # MaxPool2D wrapper
-    return tf.nn.max_pool(x, ksize=[1, k, k, 1], strides=[1, k, k, 1],
-                          padding='SAME')
+    print("shape of datas: {}\tshape of labels: {}".format(datas.shape, labels.shape))
+    log_file.write("shape of datas: {}\tshape of labels: {}".format(datas.shape, labels.shape))
+    return fpaths, datas, labels
 
 
-# Create model
-def conv_net(x, weights, biases, dropout):
-    # Reshape input picture
-    x = tf.reshape(x, shape=[-1, 128, 128, 3])
+fpaths, datas, labels = read_data(data_dir)
 
-    # Convolution Layer
-    conv1 = conv2d(x, weights['wc1'], biases['bc1'])
-    print(conv1.shape)
-    # Max Pooling (down-sampling)
-    conv1 = maxpool2d(conv1, k=2)
-    print(conv1.shape)
-    # Convolution Layer
-    conv2 = conv2d(conv1, weights['wc2'], biases['bc2'])
-    print(conv2.shape)
-    # Max Pooling (down-sampling)
-    conv2 = maxpool2d(conv2, k=2)
-    print(conv2.shape)
-    # Fully connected layer
-    # Reshape conv2 output to fit fully connected layer input
-    fc1 = tf.reshape(conv2, [-1, weights['wd1'].get_shape().as_list()[0]])
-    fc1 = tf.add(tf.matmul(fc1, weights['wd1']), biases['bd1'])
-    fc1 = tf.nn.relu(fc1)
-    # Apply Dropout
-    fc1 = tf.nn.dropout(fc1, dropout)
+# calculate how many imgs are there
+num_classes = len(set(labels))
 
-    # Output, class prediction
-    out = tf.add(tf.matmul(fc1, weights['out']), biases['out'])
-    return out
+# define placeholder
+datas_placeholder = tf.placeholder(tf.float32, [None, 128, 128, 3])#################################
+labels_placeholder = tf.placeholder(tf.int32, [None])
 
-# Store layers weight & bias
-weights = {
-    # 5x5 conv, 3 input, 24 outputs
-    'wc1': tf.Variable(tf.random_normal([5, 5, 3, 24])),
-    # 5x5 conv, 24 inputs, 96 outputs
-    'wc2': tf.Variable(tf.random_normal([5, 5, 24, 96])),
-    # fully connected, 32*32*96 inputs, 1024 outputs
-    'wd1': tf.Variable(tf.random_normal([32*32*96, 1024])),##############################################################
-    # 1024 inputs, 10 outputs (class prediction)
-    'out': tf.Variable(tf.random_normal([1024, n_classes]))###############################################################
-}
+# container of Dropout, 0.25 when training and 0 when evaluate
+dropout_placeholdr = tf.placeholder(tf.float32)
 
-biases = {
-    'bc1': tf.Variable(tf.random_normal([24])),
-    'bc2': tf.Variable(tf.random_normal([96])),
-    'bd1': tf.Variable(tf.random_normal([1024])),###################################################################################
-    'out': tf.Variable(tf.random_normal([n_classes]))
-}
+# Convolution, 20 cores, size = 5, by ReLu
+conv0 = tf.layers.conv2d(datas_placeholder, 20, 5, activation=tf.nn.relu)
 
-# Construct model
-pred = conv_net(x, weights, biases, keep_prob)
+# define Max-pooling, pooling window = 2*2, 2*2
+pool0 = tf.layers.max_pooling2d(conv0, [2, 2], [2, 2])
 
-# Define loss and optimizer
-cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=pred, labels=y))
-optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
+# Convolution, 40 cores, size = 4, by ReLu
+conv1 = tf.layers.conv2d(pool0, 40, 4, activation=tf.nn.relu)
+# define Max-pooling, pooling window = 2*2, 2*2
+pool1 = tf.layers.max_pooling2d(conv1, [2, 2], [2, 2])
 
-# Evaluate model
-correct_pred = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
-accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+# 3-dimension => 1-dimension
+flatten = tf.layers.flatten(pool1)
 
-# Initializing the variables
-init = tf.global_variables_initializer()
-saver=tf.train.Saver()
+# Full connected layer, transfer to eigenvector of size 100
+fc = tf.layers.dense(flatten, 400, activation=tf.nn.relu)
+
+# add Dropout in order not to overfit
+dropout_fc = tf.layers.dropout(fc, dropout_placeholdr)
+
+# deactivated export layer
+logits = tf.layers.dense(dropout_fc, num_classes)
+
+predicted_labels = tf.arg_max(logits, 1)
 
 
-# Launch the graph
-with tf.Session() as sess:
-    sess.run(init)
-    step = 1
-    # Keep training until reach max iterations
-    list = os.listdir( config_own.AFTER_RESIZE_DIR )
-    print(list)
-    print(len(list))
-    count=0
-    while count<10:
-        count = count+1
-        print("count:",count)
-        for batch_id in range(0, 12):
-            batch = list[batch_id * 10:batch_id * 10 + 10]
-            batch_xs = []
-            batch_ys = []
-            for image in batch:
-                id_tag = image.find("_")
-                score = image[0:id_tag]
-                # print(score)
-                img = Image.open( config_own.AFTER_RESIZE_DIR + image)
-                img_ndarray = numpy.asarray(img, dtype='float32')
-                img_ndarray = numpy.reshape(img_ndarray, [128, 128, 3])
-                # print(img_ndarray.shape)
-                batch_x = img_ndarray
-                batch_xs.append(batch_x)
-                # print(batch_xs)
-                batch_y = numpy.asarray([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])#######################################################
-                # print(type(score))
-                batch_y[int(score) - 1] = 1
-                # print(batch_y)
-                batch_y = numpy.reshape(batch_y, [10, ])######################################################
-                batch_ys.append(batch_y)
-            # print(batch_ys)
-            batch_xs = numpy.asarray(batch_xs)
-            # print("batch_xs.shape: ")
-            print(batch_xs.shape)
-            # print("batch_ys.shape: ")
-            batch_ys = numpy.asarray(batch_ys)
-            print(batch_ys.shape)
+# define loss
+losses = tf.nn.softmax_cross_entropy_with_logits(
+    labels=tf.one_hot(labels_placeholder, num_classes),
+    logits=logits
+)
 
-            sess.run(optimizer, feed_dict={x: batch_xs, y: batch_ys,
-                                           keep_prob: dropout})
-            if step % display_step == 0:
-                # Calculate batch loss and accuracy
-                loss, acc = sess.run([cost, accuracy], feed_dict={x: batch_xs,
-                                                                  y: batch_ys,
-                                                                  keep_prob: 1.})
-                print("Iter " + str(step*batch_size) + ", Minibatch Loss= " + \
-                      "{:.6f}".format(loss) + ", Training Accuracy= " + \
-                      "{:.5f}".format(acc))
-            step += 1
-    print("Optimization Finished!")
-    saver.save(sess, config_own.CKPT_DIR + "model.ckpt")
+# average loss
+mean_loss = tf.reduce_mean(losses)
+
+# define optimizer, designate the loss function
+optimizer = tf.train.AdamOptimizer(learning_rate=1e-2).minimize(losses)
+
+
+# use to store and load the model
+saver = tf.train.Saver()
+
+# only see the gpu 1
+config = tf.ConfigProto()
+config.gpu_options.visible_device_list= '0'
+
+# GPU Growth
+config.gpu_options.allow_growth = True
+config.gpu_options.per_process_gpu_memory_fraction = 0.9
+
+# with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
+with tf.Session(config=tf.ConfigProto(device_count={'GPU': 1})) as sess:
+    if train:
+        print("Train mode")
+        log_file.write("Train mode\n")
+
+        # if train mode = true, then init the parameter
+        sess.run(tf.global_variables_initializer())
+        # define import and label to fill the container, dropout = 0.25 when training
+        train_feed_dict = {
+            datas_placeholder: datas,
+            labels_placeholder: labels,
+            dropout_placeholdr: 0.25
+        }
+        for step in range(2000):
+            _, mean_loss_val = sess.run([optimizer, mean_loss], feed_dict=train_feed_dict)
+
+            if step % 10 == 0:
+                print("step = {}\tmean loss = {}".format(step, mean_loss_val))
+                log_file.write("step = {}\tmean loss = {}\n".format(step, mean_loss_val))
+        saver.save(sess, model_path)
+        print("Done training，store the model to {}".format(model_path))
+        log_file.write("Done training，store the model to {}\n".format(model_path))
+    else:
+        print("Test mode")
+        log_file.write("Test mode\n")
+
+        # load the parameter if it is evaluation
+        saver.restore(sess, model_path)
+        print("from {} import model".format(model_path))
+        log_file.write("from {} import model\n".format(model_path))
+
+        # label and name
+        label_name_dict = {
+            0: "old",
+            1: "nearly old",
+            2: "almost new"
+        }
+        # define the import and Label to fulfill the container, dropout = 0 when evaluate
+        test_feed_dict = {
+            datas_placeholder: datas,
+            labels_placeholder: labels,
+            dropout_placeholdr: 0
+        }
+        predicted_labels_val = sess.run(predicted_labels, feed_dict=test_feed_dict)
+        # real label and model's prediction
+        for fpath, real_label, predicted_label in zip(fpaths, labels, predicted_labels_val):
+            # transfer the label id into label name
+            real_label_name = label_name_dict[real_label]
+            predicted_label_name = label_name_dict[predicted_label]
+            print("{}\t{} => {}".format(fpath, real_label_name, predicted_label_name))
+            log_file.write("{}\t{} => {}\n".format(fpath, real_label_name, predicted_label_name))
+
+# # use GPU to speed up the training process
+# with tf.device('/gpu:1'):
+#     config=tf.ConfigProto(device_count={'GPU': 1})
+#     config.gpu_options.allow_growth=True
+#     # with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
+#     with tf.Session(config=config) as sess:
+#         if train:
+#             print("Train mode")
+#             log_file.write("Train mode")
+
+#             # if train mode = true, then init the parameter
+#             sess.run(tf.global_variables_initializer())
+#             # define import and label to fill the container, dropout = 0.25 when training
+#             train_feed_dict = {
+#                 datas_placeholder: datas,
+#                 labels_placeholder: labels,
+#                 dropout_placeholdr: 0.25
+#             }
+#             for step in range(2000):
+#                 _, mean_loss_val = sess.run([optimizer, mean_loss], feed_dict=train_feed_dict)
+
+#                 if step % 10 == 0:
+#                     print("step = {}\tmean loss = {}".format(step, mean_loss_val))
+#                     log_file.write("step = {}\tmean loss = {}".format(step, mean_loss_val))
+#             saver.save(sess, model_path)
+#             print("Done training，store the model to {}".format(model_path))
+#             log_file.write("Done training，store the model to {}".format(model_path))
+#         else:
+#             print("Test mode")
+#             log_file.write("Test mode")
+
+#             # load the parameter if it is evaluation
+#             saver.restore(sess, model_path)
+#             print("from {} import model".format(model_path))
+#             log_file.write("from {} import model".format(model_path))
+
+#             # label and name
+#             label_name_dict = {
+#                 0: "old",
+#                 1: "nearly old",
+#                 2: "almost new"
+#             }
+#             # define the import and Label to fulfill the container, dropout = 0 when evaluate
+#             test_feed_dict = {
+#                 datas_placeholder: datas,
+#                 labels_placeholder: labels,
+#                 dropout_placeholdr: 0
+#             }
+#             predicted_labels_val = sess.run(predicted_labels, feed_dict=test_feed_dict)
+#             # real label and model's prediction
+#             for fpath, real_label, predicted_label in zip(fpaths, labels, predicted_labels_val):
+#                 # transfer the label id into label name
+#                 real_label_name = label_name_dict[real_label]
+#                 predicted_label_name = label_name_dict[predicted_label]
+#                 print("{}\t{} => {}".format(fpath, real_label_name, predicted_label_name))
+#                 log_file.write("{}\t{} => {}".format(fpath, real_label_name, predicted_label_name))
+
+# close the record file
+log_file.close()
