@@ -20,7 +20,7 @@ log_file = open(log_file_dir + 'log_file.txt', 'w', encoding="utf-8")
 data_dir = config_own.AFTER_RESIZE_DIR
 
 # train or evaluate
-train = False
+train = True
 
 # model dir
 # model_path = "model/image_model"
