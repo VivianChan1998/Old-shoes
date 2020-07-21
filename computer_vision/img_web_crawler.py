@@ -38,30 +38,28 @@ def web_crawling(url, file_amount, log_file):
         if (item and index < photolimit ):
 		    # if there is no "data-src"
             if item.get('data-src') == None:
-                if item.get('src') == 'https://ir.ebaystatic.com/rs/v/fxxj3ttftm5ltcqnto1o4baovyl.png':
-                    continue
-                if item.get('src') == 'https://i.ebayimg.com/thumbs/images/g/JrEAAOSwo-RZuDJn/s-l1200.png':
-                    continue
-                if item.get('src') == 'https://i.ebayimg.com/thumbs/images/g/c3MAAOSwi8VZVP3E/s-l150.jpg':
+                # if item.get('src') == 'https://ir.ebaystatic.com/rs/v/fxxj3ttftm5ltcqnto1o4baovyl.png':
+                #     continue
+                # if item.get('src') == 'https://i.ebayimg.com/thumbs/images/g/JrEAAOSwo-RZuDJn/s-l1200.png':
+                #     continue
+                # if item.get('src') == 'https://i.ebayimg.com/thumbs/images/g/c3MAAOSwi8VZVP3E/s-l150.jpg':
+                #     continue
+                if item.get('src') == '/parts/img/rakuma_logo_2018.png':
                     continue
                 else:
                     img_url_origin = item.get('src')
-                    char = '1600.jpg'
-                    img_url_origin = img_url_origin[:58] + char
+                    # char = '1600.jpg'
+                    # img_url_origin = img_url_origin[:58] + char
                     html = requests.get(img_url_origin)
                     print(img_url_origin) 
                     log_file.write(img_url_origin) # write into the log file
                     log_file.write('\n')
-                    # html = requests.get(item.get('src'))
-                    # print(item.get('src'))
-                    # log_file.write(item.get('src')) # write into the log file
-                    # log_file.write('\n')
 
     		# if there is "data-src"
             else:
                 img_url_origin = item.get('data-src')
-                char = '1600.jpg'
-                img_url_origin = img_url_origin[:58] + char
+                # char = '1600.jpg'
+                # img_url_origin = img_url_origin[:58] + char
                 html = requests.get(img_url_origin)
                 print(img_url_origin) 
                 log_file.write(img_url_origin) # write into the log file
