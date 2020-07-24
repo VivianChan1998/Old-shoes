@@ -20,6 +20,7 @@ class TFObjectDetection(ObjectDetection):
     """Object Detection class for TensorFlow"""
 
     def __init__(self, graph_def, labels):
+        print("###################### get into __init__ ##########################")
         super(TFObjectDetection, self).__init__(labels)
         self.graph = tf.compat.v1.Graph()
         with self.graph.as_default():
@@ -27,6 +28,7 @@ class TFObjectDetection(ObjectDetection):
             tf.import_graph_def(graph_def, input_map={"Placeholder:0": input_data}, name="")
 
     def predict(self, preprocessed_image):
+        print("#####################get into predict #######################")
         inputs = np.array(preprocessed_image, dtype=np.float)[:, :, (2, 1, 0)]  # RGB -> BGR
 
         with tf.compat.v1.Session(graph=self.graph) as sess:
@@ -48,9 +50,10 @@ def main(image_filename):
     od_model = TFObjectDetection(graph_def, labels)
 
     image = Image.open(image_filename)
+    print("############################ open file ##########################")
     predictions = od_model.predict_image(image)
     print(predictions)
-    return predictions
+    # return predictions
 
 def write_JSON(predictions):
     JSON_dir = config.JSON_DIR
@@ -62,5 +65,6 @@ if __name__ == '__main__':
     if len(sys.argv) <= 1:
         print('USAGE: {} image_filename'.format(sys.argv[0]))
     else:
-        predictions = main(sys.argv[1])
-        write_JSON(predictions)
+        # predictions = main(sys.argv[1])
+        main(sys.argv[1])
+        # write_JSON(predictions)
