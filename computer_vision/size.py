@@ -124,7 +124,7 @@ def scaling(input_json):
 ######### TO-DO ##########
 ### 台灣/歐/美/日 各式尺寸轉換 ###
 ### 男女不一樣, 所以要先判斷是男鞋還是女鞋 ###
-def scaling_type_transform(gender, obj_scale):
+def scaling_type_transform(obj_scale):
 	specification = {
 		"jp": 22, "tw": 66, "usa": 5, "uk": 3, "eur": 34
 	}
@@ -163,9 +163,7 @@ def scaling_type_transform(gender, obj_scale):
 		specification = { "jp": 29.5, "tw": 82, "usa": 12.5, "uk": 10.5, "eur": 46}
 	elif 29.5 <= obj_scale <= 30:
 		specification = { "jp": 30, "tw": 66, "usa": 13, "uk": 11, "eur": 46}
-		
-  print( "|| JP: %d cm || TW: %d || USA: %d || UK: %d || Eur: %d ||" % (specification["jp"], specification["tw"], specification["usa"], specification["uk"], specification["eur"]) )
-
+	return specification
 
 
 
@@ -178,8 +176,11 @@ if __name__ == "__main__":
 
 		shot_cv2() # take pics #####################################################
 		input_json = img_transfer_json(endpoint)
-		obj_scale = scaling(input_json)
+		obj_scale = scaling(input_json) # scaling
 		print( "{} mm".format(obj_scale))
+		specification = scaling_type_transform(obj_scale) # transform the specification
+		print( "|| JP: %d cm || TW: %d || USA: %d || UK: %d || Eur: %d ||" % (specification["jp"], specification["tw"], specification["usa"], specification["uk"], specification["eur"]) )
+
 
 
 	except:
