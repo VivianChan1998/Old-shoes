@@ -1,3 +1,4 @@
+###### This program is for finding out the brand of the shoes. ################
 import os
 from os.path import basename
 import sys
@@ -29,14 +30,15 @@ def img_processing():
     analyze_url = endpoint + "vision/v3.0/analyze"
 
     # Set image_path
-    image_path = config_own.IMG_PATH ###################################################################
-    # image_path = sys.argv[1]
+    # image_path = config_own.IMG_PATH ###################################################################
+    image_path = sys.argv[3]
 
     # Read the image into a byte array
     image_data = open(image_path, "rb").read()
     headers = {'Ocp-Apim-Subscription-Key': subscription_key,
                'Content-Type': 'application/octet-stream'}
-    params = {'visualFeatures': 'Brands,Categories,Description,Color'}
+    # params = {'visualFeatures': 'Brands,Categories,Description,Color'}
+    params = {'visualFeatures': 'Brands'}
     response = requests.post(
         analyze_url, headers=headers, params=params, data=image_data)
     response.raise_for_status()
