@@ -123,7 +123,8 @@ def main():
 
         # Print the highest probability label
         highest_probability_index = np.argmax(predictions)
-        print('Classified as: ' + labels[highest_probability_index])
+        # print('Classified as: ' + labels[highest_probability_index])
+        print( labels[highest_probability_index] )
 
         # # Or you can print out all of the results mapping labels to probabilities.
         # label_index = 0
