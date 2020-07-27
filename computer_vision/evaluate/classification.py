@@ -132,6 +132,18 @@ def main():
         #     print (labels[label_index], truncated_probablity)
         #     label_index += 1
 
+def price(degree):
+    if degree == 0:
+        price_mul = 0.3
+        return price_mul
+    elif degree == 1:
+        price_mul == 0.6
+        return price_mul
+    elif degree == 2:
+        price_mul = 0.9
+        return price_mul
+    else:
+        return
 
 if __name__ == "__main__":
     try:
