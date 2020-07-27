@@ -87,16 +87,16 @@ def img_transfer_json(endpoint):
 
 			# Description of the image
 			analysis = response.json() # the JSON return value of the image
-			print(analysis)
+			# print(analysis)
 
 			# split the image name to rename the JSON file
 			base = os.path.basename(image_path)
 			file_name = os.path.splitext(base)[0]
 
-			# write into the JSON file
-			JSON_dir = config_own.JSON_DIR
-			with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
-			    json.dump(analysis, f, ensure_ascii=False, indent=4)
+			# # write into the JSON file
+			# JSON_dir = config_own.JSON_DIR
+			# with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
+			#     json.dump(analysis, f, ensure_ascii=False, indent=4)
 
 			k = cv2.waitKey(1)
 			img_counter += 1
@@ -177,7 +177,7 @@ if __name__ == "__main__":
 		shot_cv2() # take pics #####################################################
 		input_json = img_transfer_json(endpoint)
 		obj_scale = scaling(input_json) # scaling
-		print( "{} mm".format(obj_scale))
+		print( "{}".format(obj_scale))
 		specification = scaling_type_transform(obj_scale) # transform the specification
 		print( "|| JP: %d cm || TW: %d || USA: %d || UK: %d || Eur: %d ||" % (specification["jp"], specification["tw"], specification["usa"], specification["uk"], specification["eur"]) )
 

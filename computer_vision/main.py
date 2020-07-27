@@ -46,26 +46,18 @@ def img_processing():
     # Description of the image
     analysis = response.json() # the JSON return value of the image
     print(analysis) ######## this is what frontend exactly need (??? #########
+    print()
+    caption = analysis["brands"][0]["name"]
+    print(caption)
 
     # split the image name to rename the JSON file
     base = os.path.basename(image_path)
     file_name = os.path.splitext(base)[0]
 
-    # write into the JSON file
-    JSON_dir = config_own.JSON_DIR #####################################
-    with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
-        json.dump(analysis, f, ensure_ascii=False, indent=4)
-
-
-    # # set the show title on the image window
-    # image_caption = analysis["brands"][0]["name"].capitalize()
-    # #print(image_caption)
-    # # Display the image and overlay it with the caption.
-    # image = Image.open(BytesIO(image_data))
-    # plt.imshow(image)
-    # plt.axis("off")
-    # _ = plt.title(image_caption, size="x-large", y=-0.1)
-    # plt.show()
+    # # write into the JSON file
+    # JSON_dir = config_own.JSON_DIR #####################################
+    # with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
+    #     json.dump(analysis, f, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
     try:
