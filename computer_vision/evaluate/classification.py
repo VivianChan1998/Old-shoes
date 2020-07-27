@@ -1,7 +1,7 @@
 import logging
 import os
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # FATAL
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # DISABLE ALL THE INFO
 logging.getLogger('tensorflow').setLevel(logging.FATAL)
 
 import tensorflow as tf
@@ -74,7 +74,7 @@ def main():
     graph_def = tf.compat.v1.GraphDef()
     labels = []
 
-    # These are set to the default names from exported models, update as needed.
+    # These are set to the default names from exported models, update as needed.#################################
     filename = config.MODEL_PATH_DEGREE
     labels_filename = config.LABELS_PATH_DEGREE
 

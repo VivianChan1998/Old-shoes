@@ -130,7 +130,7 @@ def scaling_type_transform(obj_scale):
 	}
 	# if gender == women: ##### if the input is women's shoes 
 	if obj_scale <= 22:
-			## do nothing ##
+		specification = { "jp": 22, "tw": 66, "usa": 5, "uk": 3, "eur": 34}
 	elif 22 <= obj_scale <= 22.5:
 		specification = { "jp": 22.5, "tw": 67, "usa": 5.5, "uk": 3.5, "eur": 35}
 	elif 22.5 <= obj_scale <= 23:
