@@ -54,7 +54,7 @@ def img_processing():
     base = os.path.basename(image_path)
     file_name = os.path.splitext(base)[0]
 
-    # # write into the JSON file
+    # # write into the JSON file 
     # JSON_dir = config_own.JSON_DIR #####################################
     # with open( JSON_dir + file_name + '.json', 'w', encoding='utf-8') as f:
     #     json.dump(analysis, f, ensure_ascii=False, indent=4)
