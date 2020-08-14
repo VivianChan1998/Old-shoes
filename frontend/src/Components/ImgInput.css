@@ -1,0 +1,99 @@
+#file-input-wrapper{
+    height: 5vh;
+    margin: 3vh 1vh 1vh 1vh;
+    padding: 1vh 5vw 1vh 5vw;
+    border-radius: 3px;
+    color: white;
+    background-color: var(--blue);
+    cursor: pointer;
+
+}
+
+
+input[type='file']{
+    display: none;
+}
+
+.submit-upload-image{
+    display: block;
+    width: 40vw;
+    margin: 3vh 30vw 5vh 30vw; 
+    padding: 1vh 5vw 1vh 5vw;
+    border: none;
+    border-radius: 3px;
+}
+
+.submit-disable{
+    color: var(--blue);
+    background-color: var(--white);
+}
+
+#upload-wrapper{
+    width: 100%;
+}
+
+#camera-wrapper{
+    width: 100vw;
+    justify-content: center;
+}
+
+#preview-photo{
+    height: 600px;
+    width: 800px;
+    margin: auto;
+    border: 3px dotted gray;
+}
+
+#no-photo {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+
+#no-photo div{
+    position: relative;
+    width: 30%;
+    height: 30%;
+    margin: 25% 35% 25% 35%;
+    background-image: url(../img/shoeIcon.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: opacity(.5);
+}
+
+
+#preview-photo img{
+    position: relative;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+}
+
+#or{
+    margin: 2vh auto 2vh auto;
+}
+
+.upload-section{
+    margin-top: 2vh;
+    margin-bottom: 3vh;
+}
+
+.upload-section h1{
+    position: relative;
+    margin: 5vh auto 8vh auto;
+}
+
+.Result button{
+    width: 20%;
+    margin: 1vh 40% 3vh 40%;
+}
+
+.ResultText{
+    position: relative;
+    margin: .5vh 10% .5vh 10%;
+}
+
+.ResultText h3{
+    color: var(--blue);
+}

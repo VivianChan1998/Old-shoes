@@ -1,0 +1,27 @@
+.App {
+  text-align: center;
+}
+
+*{
+  --red: #C1666B;
+  --yellow: #D4B483;
+  --white: #E4DFDA;
+  --blue: #48A9A6;
+}
+
+.green-button{
+  display: block;
+  height: 5vh;
+  margin: auto;
+  padding: 1vh 5vw 1vh 5vw;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  background-color: var(--blue);
+  cursor: pointer;
+}
+
+
+.capture-button{
+  margin: 2vh auto 5vh auto;
+}
