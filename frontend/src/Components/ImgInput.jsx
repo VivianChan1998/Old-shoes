@@ -6,6 +6,8 @@ import ReactCrop from 'react-image-crop';
 import { Modal } from 'office-ui-fabric-react'
 import 'react-image-crop/dist/ReactCrop.css';
 import './ImgInput.css'
+import { DefaultButton } from 'office-ui-fabric-react';
+import ImageSearchResult from './ImageSearchResult';
 
 class Crop extends React.Component{
     constructor(props){
@@ -37,13 +39,22 @@ export default class ImgInput extends React.Component{
             srcType: '',
             srcURL: '',
             src: '',
-            isModalOpen: false
+            isModalOpen: false,
+            isResultOpen: false,
+            data: {
+                main: '',
+                size: '',
+                classification: ''
+            },
+            pending: false,
+            price: 'calculating...'
         }
         this.fileInput = React.createRef();
     }
     async handleSubmit(){
+        this.setState({pending: true})
         var form = new FormData()
-        console.log(this.state)
+        //console.log(this.state)
         
         form.append("file", this.state.src)
         const settings = {
@@ -53,12 +64,22 @@ export default class ImgInput extends React.Component{
         var url = this.state.srcType === 'photo' ? 'http://localhost:3000/recieve-img-url' : 'http://localhost:3000/recieve-img'
         let res = await fetch(url, settings)
         let data = await res.json()
-        console.log(data)
+        //console.log(data)
+        this.setState({
+            data: {
+                main: data.data.main,
+                size: data.data.size,
+                classification: data.data.classification
+            },
+            isResultOpen: true,
+            pending: false
+        })
+        this.handleImgSearch()
     }
-    /*
-    handleSubmit(){
-        var subscriptionKey = '91c59bd9b23c40248d54ffa568c0c33a';
-        console.log(this.fileInput)
+    
+    handleImgSearch(){
+        var subscriptionKey = '32b2d63a6c1a4ba7bbbfed16fd497f0b';
+        //console.log(this.fileInput)
         var imagePath = this.fileInput;
         if (imagePath.length === 0)
         {
@@ -69,9 +90,9 @@ export default class ImgInput extends React.Component{
         this.sendRequest(f, subscriptionKey);
     }
     async sendRequest(file, key) {
-        var market = 'zh-TW'; //temp
+        var market = 'en-US'; //temp
         var safeSearch = 'moderate'; //temp
-        var baseUrl = `https://api.cognitive.microsoft.com/bing/v7.0/images/visualsearch?mkt=${market}&safesearch=${safeSearch}`;
+        var baseUrl = `https://eastasia.api.cognitive.microsoft.com//bing/v7.0/images/visualsearch?mkt=${market}&safesearch=${safeSearch}`;
         var form = new FormData();
         form.append("image", file);
         const settings = {
@@ -84,10 +105,11 @@ export default class ImgInput extends React.Component{
 
         const res = await fetch(baseUrl, settings)
         const data = await res.json()
-        console.log(data)
-        //this.setState({tags: data.tags, default: data.tags[0]['actions'][0].data.value})
+        //console.log(data)
+        
+        this.setState({tags: data.tags})
     }
-    */
+    
     handleImageName(){
         /*var fullPath = document.getElementById('uploadImage').value;
         if (fullPath) {
@@ -107,11 +129,11 @@ export default class ImgInput extends React.Component{
     }
 
     render(){
+        //console.log(this.state.data)
         return(
             <div>
-                
-                {/*<Crop src={this.state.srcURL} />*/}
                 <div className='upload-section'>
+                    <h1>Upload your photo, show us your shoes</h1>
                     <div id='upload-wrapper'>
                         <label id='file-input-wrapper'>
                             Upload file
@@ -146,17 +168,23 @@ export default class ImgInput extends React.Component{
                         />
                     </div>
                 </Modal>
-               
-
                 <div id='preview-photo'>
                     {this.state.srcURL===''?
                         <div id='no-photo'>
-                            <h3>Upload your photo, show us your shoes</h3>
                             <div />
                         </div>
                         :<img src={this.state.srcURL} />
                     }
                 </div>
+
+                {
+                    this.state.pending?
+                    <div>
+                        Loading...
+                    </div>
+                    :
+                    ''
+                }
                 
                 <button className={this.state.src? 'submit-upload-image green-button' : 'submit-upload-image submit-disable'} onClick={()=>this.handleSubmit()}>
                     Submit
@@ -167,7 +195,32 @@ export default class ImgInput extends React.Component{
                 <div>
                     {this.state.tags.map(e => <SearchResult data={e} />)}
                 </div>
+                <Modal
+                    titleAriaId='ResultModal'
+                    isOpen={this.state.isResultOpen}
+                    onDismiss={() => this.setState({isResultOpen: false})}
+                    isBlocking={false}
+                    containerClassName={''}
+                 >
+                    <div className='Result'>
+                        <img src={this.state.srcURL} />
+                        <ResultText title='Brand' value={this.state.data.main} />
+                        <ResultText title='Size' value={this.state.data.size} />
+                        <ResultText title='classification' value={this.state.data.classification} />
+                        <ImageSearchResult tags={this.state.tags} />
+                        <DefaultButton text='Close' onClick={() => this.setState({isResultOpen: false})}/>
+                    </div>
+                </Modal>
             </div>
         )
     }
+}
+
+function ResultText(props){
+    return(
+        <div className='ResultText'>
+            <h3>{props.title}</h3>
+            <p>{props.value || 'N/A'}</p>
+        </div>
+    )
 }

@@ -5,7 +5,7 @@ import './Camera.css'
 const videoConstraints = {
     width: 800,
     height: 600,
-    video: { facingMode: { exact: "environment" } }
+    facingMode: { exact: 'environment' }
 };
 
 export default class Camera extends React.Component{
@@ -14,11 +14,6 @@ export default class Camera extends React.Component{
         this.webcamRef = React.createRef()
         this.state = {
             imgsrc: '',
-            videoConstraints: {
-                width: 800,
-                height: 600,
-                facingMode: "environment"
-            }
         }
     }
     capture(){
@@ -35,10 +30,10 @@ export default class Camera extends React.Component{
                         <Webcam
                             audio={false}
                             height={600}
+                            width={800}
                             ref={this.webcamRef}
                             screenshotFormat="image/jpeg"
-                            width={800}
-                            videoConstraints={this.state.videoConstraints}
+                            videoConstraints={videoConstraints}
                         />
                     </div>
                     <canvas className="webcam-canvas"

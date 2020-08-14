@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import { DefaultButton, PrimaryButton, Stack, Modal } from 'office-ui-fabric-react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import './Nav.css'
@@ -19,7 +20,9 @@ export default class NavBar extends React.Component{
         return(
             <div className='Nav-wrapper'>
                 <Stack horizontal tokens={stackTokens}>
-                    <h3>Old-shoes</h3>
+                    <Link to='/'>
+                        <h3>Old-shoes</h3>
+                    </Link>
                     <DefaultButton text="Login" onClick={() =>　this.setState({isLoginModalOpen: true})} allowDisabledFocus />
                     <PrimaryButton text="Signup" onClick={() => console.log('signup')} allowDisabledFocus />
                 </Stack>
