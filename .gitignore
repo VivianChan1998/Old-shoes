@@ -10,3 +10,5 @@
 /computer_vision/Training/model
 /computer_vision/Training/log
 /computer_vision/evaluate/__pycache__/
+/computer_vision/Training/RL_train
+/keras-rl
