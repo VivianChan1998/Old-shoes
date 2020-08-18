@@ -28,6 +28,7 @@ def img_processing():
 
     # Read the image into a byte array
     image_data = open(image_path, "rb").read()
+    # Set API
     headers = {'Ocp-Apim-Subscription-Key': subscription_key,
                'Content-Type': 'application/octet-stream'}
     params = {'visualFeatures': 'Brands,Categories,Description,Color'}
