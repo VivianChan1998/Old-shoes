@@ -7,7 +7,7 @@ import { Modal } from 'office-ui-fabric-react'
 import 'react-image-crop/dist/ReactCrop.css';
 import './ImgInput.css'
 import { DefaultButton } from 'office-ui-fabric-react';
-import ImageSearchResult from './ImageSearchResult';
+import ImageSearchResult from './ImgSearchResult';
 
 class Crop extends React.Component{
     constructor(props){
@@ -64,7 +64,8 @@ export default class ImgInput extends React.Component{
         var url = this.state.srcType === 'photo' ? 'http://localhost:3000/recieve-img-url' : 'http://localhost:3000/recieve-img'
         let res = await fetch(url, settings)
         let data = await res.json()
-        //console.log(data)
+        //
+        console.log(data)
         this.setState({
             data: {
                 main: data.data.main,
@@ -78,7 +79,7 @@ export default class ImgInput extends React.Component{
     }
     
     handleImgSearch(){
-        var subscriptionKey = '32b2d63a6c1a4ba7bbbfed16fd497f0b';
+        var subscriptionKey = '91d30f73f5ef4024a6084f43f5472407';
         //console.log(this.fileInput)
         var imagePath = this.fileInput;
         if (imagePath.length === 0)
@@ -92,7 +93,8 @@ export default class ImgInput extends React.Component{
     async sendRequest(file, key) {
         var market = 'en-US'; //temp
         var safeSearch = 'moderate'; //temp
-        var baseUrl = `https://eastasia.api.cognitive.microsoft.com//bing/v7.0/images/visualsearch?mkt=${market}&safesearch=${safeSearch}`;
+        var baseUrl = `https://old-shoes.cognitiveservices.azure.com/bing/v7.0/images/visualsearch?mkt=${market}&safesearch=${safeSearch}`;
+        //cognitive services
         var form = new FormData();
         form.append("image", file);
         const settings = {
@@ -175,26 +177,29 @@ export default class ImgInput extends React.Component{
                         </div>
                         :<img src={this.state.srcURL} />
                     }
+                    {
+                        this.state.pending?
+                        <div id='loading'>
+                            <h3>Loading...</h3>
+                        </div>
+                        :
+                        ''
+                    }   
                 </div>
 
-                {
-                    this.state.pending?
-                    <div>
-                        Loading...
-                    </div>
-                    :
-                    ''
-                }
+                
                 
                 <button className={this.state.src? 'submit-upload-image green-button' : 'submit-upload-image submit-disable'} onClick={()=>this.handleSubmit()}>
                     Submit
                 </button>
+                {/*
                 <div>
                     {this.state.default.map(e => <DefaultResult data={e} />)}
                 </div>
                 <div>
                     {this.state.tags.map(e => <SearchResult data={e} />)}
                 </div>
+                */}
                 <Modal
                     titleAriaId='ResultModal'
                     isOpen={this.state.isResultOpen}
@@ -207,7 +212,11 @@ export default class ImgInput extends React.Component{
                         <ResultText title='Brand' value={this.state.data.main} />
                         <ResultText title='Size' value={this.state.data.size} />
                         <ResultText title='classification' value={this.state.data.classification} />
-                        <ImageSearchResult tags={this.state.tags} />
+                        {
+                            this.state.tags === undefined?
+                            <h3>Nope</h3>:
+                            <ImageSearchResult tags={this.state.tags} classification={this.state.data.classification}/>
+                        }
                         <DefaultButton text='Close' onClick={() => this.setState({isResultOpen: false})}/>
                     </div>
                 </Modal>

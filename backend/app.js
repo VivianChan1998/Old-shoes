@@ -17,27 +17,10 @@ app.use(express.static(__dirname + '/public'));
 app.use(multer({dest: './temp/'}).any());
 
 app.get('/', (req, res) => res.send('Hello World!'))
-/*
-async function callPythonCV(filename){
-  let main = ''
-  let size = ''
-  let pyMain = await runPython('main.py', filename)
-  .then(data => main = data.toString())
 
-  let pySize = await runPython('size.py', filename)
-  .then(data => size = data.toString())
-
-  //console.log(main)
-  //console.log(size)
-  return ({
-    main: main,
-    size: size
-  })
-}
-*/
 async function runPython(pyname, filename){
   
-  const python = awaitSpawn('python', [ pyname, filename, '5843edbf74934be5b2f5947361e4aa01','https://cv-20200706-eastasia.cognitiveservices.azure.com/'] );
+  const python = awaitSpawn('python', [ pyname, filename, '191e80cd7e9d44a99c25c0b3e5ecfab2','https://old-shoes-20200818.cognitiveservices.azure.com/'] );
   /*python.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
   });*/
@@ -92,10 +75,12 @@ app.post('/recieve-img-url', async (req, res) => {
 
   let pyMain = await runPython('main.py', filename)
   .then(data => main = data.toString())
+  .then(() => console.log(main))
   .catch(err => console.log(err))
 
   let pySize = await runPython('size.py', filename)
   .then(data => size = data.toString())
+  .then(() => console.log(size))
   .catch(err => console.log(err))
   
   let pyClass = await runPython('classification.py', filename)
@@ -154,10 +139,12 @@ async (req, res) => {
 
   let pyMain = await runPython('main.py', filename)
   .then(data => main = data.toString())
+  .then(() => console.log(main))
   .catch(err => console.log(err))
 
   let pySize = await runPython('size.py', filename)
   .then(data => size = data.toString())
+  .then(() => console.log(size))
   .catch(err => console.log(err))
   
   let pyClass = await runPython('classification.py', filename)
@@ -172,13 +159,6 @@ async (req, res) => {
       classification: classification
     }
   })
-  /*
-  let mainandsize = callPythonCV(filename)
-  .then(data => {
-    console.log(data.toString())
-    //res.send({success: 'ok', data: data.toString()})
-  })
-  */
 }
 )
 

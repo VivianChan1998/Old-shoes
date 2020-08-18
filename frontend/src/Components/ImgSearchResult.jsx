@@ -1,15 +1,17 @@
 import React from 'react'
+import "./ImgSearchResult.css"
 
 export default class ImageSearchResult extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            price: []
+            price: [],
+            showDetail: false
         }
     }
     addProducts(products) {
         console.log(products)
-        var length = (products.length > 10) ? 20 : products.length;
+        var length = (products.length > 20) ? 20 : products.length;
         var price = []
         var l = []
         for (var j = 0; j < length; j++) {
@@ -20,7 +22,7 @@ export default class ImageSearchResult extends React.Component {
                     var offers = products[j].insightsMetadata.aggregateOffer.offers;
                     // Show all the offers. Not all markets provide links to offers.
                     for (var i = 0; i < offers.length; i++) {  
-                        var para = document.createElement('p');
+                        /*var para = document.createElement('p');
 
                         var offer = document.createElement('a');
                         offer.text = offers[i].name;
@@ -32,7 +34,7 @@ export default class ImageSearchResult extends React.Component {
                         var span = document.createElement('span');
                         span.textContent = 
                         para.appendChild(span);
-
+                        */
                         var para = <p>
                                         {img}
                                         <a href={offers[i].url}>
@@ -58,7 +60,7 @@ export default class ImageSearchResult extends React.Component {
                 }
             }
         }
-        console.log(price)
+        //console.log(price)
         return {
             list: l,
             price: price
@@ -74,7 +76,7 @@ export default class ImageSearchResult extends React.Component {
     }
     
     render(){
-        console.log(this.props.tags[0].actions)
+        //console.log(this.props.tags[0].actions)
         var action = this.props.tags[0].actions
         var result = {list: [], price: []}
         if(action !== undefined) {
@@ -85,20 +87,24 @@ export default class ImageSearchResult extends React.Component {
                 }
             }
         }
-        console.log(result)
-        var price = this.calcAvgPrice(result.price)
+        var price = this.calcAvgPrice(result.price) * this.props.classification / 3
+        console.log(price)
         return(
-            <div>
-                <div>
-                    <h3>Price:</h3>
-                    <p>{price} USD</p>
+            <div className="imgSearchResult-wrapper">
+                <div className='ResultText'>
+                    <h3>Price</h3>
+                    <p>{price == NaN? "Calculating..." : `${price} USD`}</p>
+                </div>
+                <div className='show-more ResultText' onClick={() => this.setState(prevState => ({showDetail: !prevState.showDetail}))}>
+                    <h3> click to {this.state.showDetail? 'Hide':'Show'} other online results  </h3>
                 </div>
                 {
+                    this.state.showDetail?
                     result.list.map(e =>
-                        <div>
+                        <div className='ResultText Online-result'>
                             {e}
                         </div>
-                    )
+                    ):''
                 }
             </div>
         )
