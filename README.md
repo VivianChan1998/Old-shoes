@@ -2,10 +2,29 @@
 Build with Windows OS and Azure.
 ![Architecture Workflow - with detail](https://user-images.githubusercontent.com/33646045/91403276-e3dcc180-e873-11ea-8646-83321ec11e57.png)
 
-## Environment
+## Files
+
+### DIR //computer_vision//
+
+#### /evaluate/
+model training programs
+
+#### /model/
+trained-model
+
+#### /img_web_crawler.py
+for web crawling
+
+#### /main.py
+main program of the computer vision: to detect the brands of the input img
+
+#### /size.py
+take a picture by webcam and analysize the output image
 
 
-## Usage
+## Libraries
+
+## Usage (only for Computer Vision)
 ### 1. clone the repo
 ```
 git clone https://github.com/VivianChan1998/Old-shoes.git
@@ -66,15 +85,4 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
   ```
 
 
-## Files
 
-### DIR //computer_vision//
-
-#### /main.py
-main program of the computer vision: to detect the brands of the input img
-
-#### /size.py
-take a picture by webcam and analysize the output image
-
-
-## Libraries
