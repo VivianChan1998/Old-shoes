@@ -1,10 +1,22 @@
 .Nav-wrapper{
     height: 5vh;
-    padding: 1vh 5vw 0 5vw;
+    padding: 2vh 5vw 0 5vw;
 }
 
 .Nav-wrapper h3{
-    margin: 0 5vw 0 0;
+    position: relative;
+    margin: 0;
     line-height: 5vh;
     color: var(--red);
+}
+
+#login-button{
+    position: relative;
+    width: 20%;
+    margin-left: 70%
+}
+
+#login-button button{
+    margin-right: 10%;
+    width: 40%;
 }

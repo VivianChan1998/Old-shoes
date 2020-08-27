@@ -1,21 +1,30 @@
 #Home-banner-wrapper h1{
     font-size: 3rem;
+    margin-bottom: 0rem;
     color: var(--red);
 }
 
 #Home-banner-wrapper p{
-    font-size: 1.5rem;
-    color: var(--white);
+    font-size: 1.2rem;
+    margin-top: 0;
+    color: var(--yellow);
+}
+
+#Home-banner-wrapper button{
+    width: 30vh;
+    padding: 2vh;
+    margin: 3vh;
 }
 
 #Home-banner-bg{
     background-image: url('../img/Home-banner.jpg');
-    position: absolute;
+    background-size: cover;
+    position: relative;
     z-index: -1;
-    height: 105vh;
-    width: 100vw;
-    margin-top: -10vh;
-    margin-bottom: -10vh;
-    filter: opacity(.8) blur(5px);
+    height: 50vh;
+    width: 50vw;
+    margin:auto;
+    margin-top: 10vh;
+    border-radius: 30px;
 }
 

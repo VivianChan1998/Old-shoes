@@ -23,8 +23,11 @@ export default class NavBar extends React.Component{
                     <Link to='/'>
                         <h3>Old-shoes</h3>
                     </Link>
-                    <DefaultButton text="Login" onClick={() =>　this.setState({isLoginModalOpen: true})} allowDisabledFocus />
-                    <PrimaryButton text="Signup" onClick={() => console.log('signup')} allowDisabledFocus />
+                    <div id="login-button">
+                        <DefaultButton text="Login" onClick={() =>　this.setState({isLoginModalOpen: true})} allowDisabledFocus />
+                        <DefaultButton text="Signup" onClick={() => console.log('signup')} allowDisabledFocus />
+                    </div>
+                    
                 </Stack>
                 <Modal
                     titleAriaId='LoginModal'
