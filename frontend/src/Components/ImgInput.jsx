@@ -54,8 +54,7 @@ export default class ImgInput extends React.Component{
     async handleSubmit(){
         this.setState({pending: true})
         var form = new FormData()
-        //console.log(this.state)
-        
+
         form.append("file", this.state.src)
         const settings = {
             method: 'POST',
@@ -64,8 +63,7 @@ export default class ImgInput extends React.Component{
         var url = this.state.srcType === 'photo' ? 'http://localhost:3000/recieve-img-url' : 'http://localhost:3000/recieve-img'
         let res = await fetch(url, settings)
         let data = await res.json()
-        //
-        console.log(data)
+
         this.setState({
             data: {
                 main: data.data.main,
@@ -80,7 +78,6 @@ export default class ImgInput extends React.Component{
     
     handleImgSearch(){
         var subscriptionKey = '91d30f73f5ef4024a6084f43f5472407';
-        //console.log(this.fileInput)
         var imagePath = this.fileInput;
         if (imagePath.length === 0)
         {
@@ -107,21 +104,11 @@ export default class ImgInput extends React.Component{
 
         const res = await fetch(baseUrl, settings)
         const data = await res.json()
-        //console.log(data)
-        
+
         this.setState({tags: data.tags})
     }
     
     handleImageName(){
-        /*var fullPath = document.getElementById('uploadImage').value;
-        if (fullPath) {
-            var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
-            var filename = fullPath.substring(startIndex);
-            if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
-                filename = filename.substring(1);
-            }
-            
-        }*/
         var f = document.getElementById('uploadImage').files[0]
         this.setState({
             srcURL: URL.createObjectURL(f),
@@ -131,7 +118,6 @@ export default class ImgInput extends React.Component{
     }
 
     render(){
-        //console.log(this.state.data)
         return(
             <div>
                 <div className='upload-section'>
@@ -192,14 +178,6 @@ export default class ImgInput extends React.Component{
                 <button className={this.state.src? 'submit-upload-image green-button' : 'submit-upload-image submit-disable'} onClick={()=>this.handleSubmit()}>
                     Submit
                 </button>
-                {/*
-                <div>
-                    {this.state.default.map(e => <DefaultResult data={e} />)}
-                </div>
-                <div>
-                    {this.state.tags.map(e => <SearchResult data={e} />)}
-                </div>
-                */}
                 <Modal
                     titleAriaId='ResultModal'
                     isOpen={this.state.isResultOpen}

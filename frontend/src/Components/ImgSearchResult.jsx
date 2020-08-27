@@ -10,31 +10,15 @@ export default class ImageSearchResult extends React.Component {
         }
     }
     addProducts(products) {
-        console.log(products)
         var length = (products.length > 20) ? 20 : products.length;
         var price = []
         var l = []
         for (var j = 0; j < length; j++) {
             var img = <img src={products[j].thumbnailUrl + '&w=120&h=120'} title={products[j].name} />
-            console.log(products[j].insightsMetadata.hasOwnProperty('aggregateOffer'))
             if (products[j].insightsMetadata.hasOwnProperty('aggregateOffer')) {
                 if (products[j].insightsMetadata.aggregateOffer.offerCount > 0) {
                     var offers = products[j].insightsMetadata.aggregateOffer.offers;
-                    // Show all the offers. Not all markets provide links to offers.
                     for (var i = 0; i < offers.length; i++) {  
-                        /*var para = document.createElement('p');
-
-                        var offer = document.createElement('a');
-                        offer.text = offers[i].name;
-                        offer.setAttribute('href', offers[i].url);
-                        offer.setAttribute('style', 'margin: 20px 20px 0 0');
-                        offer.setAttribute('target', '_blank')
-                        para.appendChild(offer);
-
-                        var span = document.createElement('span');
-                        span.textContent = 
-                        para.appendChild(span);
-                        */
                         var para = <p>
                                         {img}
                                         <a href={offers[i].url}>
@@ -48,19 +32,16 @@ export default class ImageSearchResult extends React.Component {
                         l.push(para)
                     }
                 }
-                else {  // Otherwise, just show the lowest price that Bing found.
+                else {
                     var offer = products[j].insightsMetadata.aggregateOffer;
-
                     var para = <p>
                             {img}
                             {`${offer.name} | ${offer.lowPrice} ${offer.priceCurrency}`}
                         </p>
-
                     l.push(para)
                 }
             }
         }
-        //console.log(price)
         return {
             list: l,
             price: price
@@ -76,7 +57,6 @@ export default class ImageSearchResult extends React.Component {
     }
     
     render(){
-        //console.log(this.props.tags[0].actions)
         var action = this.props.tags[0].actions
         var result = {list: [], price: []}
         if(action !== undefined) {
@@ -88,7 +68,6 @@ export default class ImageSearchResult extends React.Component {
             }
         }
         var price = this.calcAvgPrice(result.price) * this.props.classification / 3
-        console.log(price)
         return(
             <div className="imgSearchResult-wrapper">
                 <div className='ResultText'>
