@@ -3,6 +3,7 @@ Build with Windows OS and Azure.
 ![Architecture Workflow - with detail](https://user-images.githubusercontent.com/33646045/91403276-e3dcc180-e873-11ea-8646-83321ec11e57.png)
 
 [Introduction by Powerpoint](https://msseed9-my.sharepoint.com/:p:/g/personal/17-yvonne_hsiao_msseed_idv_tw/EUfuh_ZUXkZDm0cWxrKJEU4B3rYHyfW-gAc7EphmfDqTiw?e=UEqFON)
+
 [DEMO video](https://youtu.be/qhvRG2RHAFs)
 
 ## Files
