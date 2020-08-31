@@ -1,35 +1,11 @@
 import React from 'react'
-import SearchResult from './SearchResult'
-import DefaultResult from './DefaultResult';
 import Camera from '../Components/Camera'
-import ReactCrop from 'react-image-crop';
 import { Modal } from 'office-ui-fabric-react'
 import 'react-image-crop/dist/ReactCrop.css';
 import './ImgInput.css'
 import { DefaultButton } from 'office-ui-fabric-react';
 import ImageSearchResult from './ImgSearchResult';
 
-class Crop extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            src: null,
-            crop: {
-              width: 800,
-              height: 600
-            },
-        };
-    }
-    
-    render(){
-        return(
-            <div>
-                <ReactCrop src={this.props.src} crop={this.state.crop} />
-            </div>
-            
-        )
-    }
-}
 export default class ImgInput extends React.Component{
     constructor(){
         super()
@@ -77,7 +53,7 @@ export default class ImgInput extends React.Component{
     }
     
     handleImgSearch(){
-        var subscriptionKey = '91d30f73f5ef4024a6084f43f5472407';
+        var subscriptionKey = ''; //Place your subsciption key from Azure Cognitive Search here!
         var imagePath = this.fileInput;
         if (imagePath.length === 0)
         {
@@ -161,7 +137,7 @@ export default class ImgInput extends React.Component{
                         <div id='no-photo'>
                             <div />
                         </div>
-                        :<img src={this.state.srcURL} />
+                        :<img src={this.state.srcURL} alt='no-input'/>
                     }
                     {
                         this.state.pending?
@@ -186,7 +162,7 @@ export default class ImgInput extends React.Component{
                     containerClassName={''}
                  >
                     <div className='Result'>
-                        <img src={this.state.srcURL} />
+                        <img src={this.state.srcURL} alt='calc-result'/>
                         <ResultText title='Brand' value={this.state.data.main} />
                         <ResultText title='Size' value={this.state.data.size} />
                         <ResultText title='classification' value={this.state.data.classification} />

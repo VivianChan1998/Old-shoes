@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import { DefaultButton, PrimaryButton, Stack, Modal } from 'office-ui-fabric-react';
+import { DefaultButton, Stack, Modal } from 'office-ui-fabric-react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
 import './Nav.css'
 

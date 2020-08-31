@@ -14,7 +14,7 @@ export default class ImageSearchResult extends React.Component {
         var price = []
         var l = []
         for (var j = 0; j < length; j++) {
-            var img = <img src={products[j].thumbnailUrl + '&w=120&h=120'} title={products[j].name} />
+            var img = <img src={products[j].thumbnailUrl + '&w=120&h=120'} title={products[j].name} alt={products[j].name}/>
             if (products[j].insightsMetadata.hasOwnProperty('aggregateOffer')) {
                 if (products[j].insightsMetadata.aggregateOffer.offerCount > 0) {
                     var offers = products[j].insightsMetadata.aggregateOffer.offers;
@@ -62,7 +62,6 @@ export default class ImageSearchResult extends React.Component {
         if(action !== undefined) {
             for(var i=0; i < action.length; ++i){
                 if (action[i].actionType === 'ProductVisualSearch') {
-                    console.log('ProductVisualSearch')
                     result = this.addProducts(action[i].data.value)
                 }
             }
@@ -72,7 +71,7 @@ export default class ImageSearchResult extends React.Component {
             <div className="imgSearchResult-wrapper">
                 <div className='ResultText'>
                     <h3>Price</h3>
-                    <p>{price == NaN? "Calculating..." : `${price} USD`}</p>
+                    <p>{isNaN(price)? "Calculating..." : `${price} USD`}</p>
                 </div>
                 <div className='show-more ResultText' onClick={() => this.setState(prevState => ({showDetail: !prevState.showDetail}))}>
                     <h3> click to {this.state.showDetail? 'Hide':'Show'} other online results  </h3>
