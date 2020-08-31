@@ -4,7 +4,7 @@ Build with Windows OS and Azure.
 
 :signal_strength: [Introduction by Powerpoint](https://msseed9-my.sharepoint.com/:p:/g/personal/17-yvonne_hsiao_msseed_idv_tw/EUfuh_ZUXkZDm0cWxrKJEU4B3rYHyfW-gAc7EphmfDqTiw?e=UEqFON)
 
-:cinema: [DEMO video](https://youtu.be/qhvRG2RHAFs)
+:cinema: [DEMO video](https://youtu.be/zY9YaBBk1hw)
 
 ## Files
 
