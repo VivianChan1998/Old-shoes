@@ -61,14 +61,9 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
 
 ### 3. register the Azure portal and set up your own computer vision resource(https://portal.azure.com/)
 
-### 4. in the project directory, type the following command and execute
-  ```
-  python3 main.py <your-cv-sunscription-key> <your-cv-endpoint>
-  ```
+### 4. Create two directories: "JSON_file" & "img" in the proper site of your computer
 
-### 5. Create two directories: "JSON_file" & "img" in the proper site of your computer
-
-### 6. set up the "config_own.py" file
+### 5. set up the "config_own.py" file
 
   ```
   # First create the "config_own.py" file in the "computer_vision" directory
@@ -78,6 +73,11 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
   SHOT_CV2_DIR = "your-own-path" # which stands for the path of the images that cv2 camera shoot
   IMG_PATH = "your-own-path" # which stands for the path of the to-be-analysized-image
   IMG_DIR = "your-own-path" # which stands for the path of the directory where the to-be-analysized-images store
+  ```
+
+### 6. in the project directory, type the following command and execute
+  ```
+  python3 main.py <your-cv-sunscription-key> <your-cv-endpoint>
   ```
 
 
