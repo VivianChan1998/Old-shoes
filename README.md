@@ -61,22 +61,14 @@ git clone https://github.com/VivianChan1998/Old-shoes.git
 
 ### 3. register the Azure portal and set up your own computer vision resource(https://portal.azure.com/)
 
-### 4. set the key and the endpoint in the CLI
+### 4. in the project directory, type the following command and execute
   ```
-  setx COMPUTER_VISION_KEY "your-key"
-  setx COMPUTER_VISION_ENDPOINT "your-endpoint"
-  ```
-
-### 5. reopen the CLI
-
-### 6. in the project directory, type the following command and execute
-  ```
-  python3 main.py
+  python3 main.py <your-cv-sunscription-key> <your-cv-endpoint>
   ```
 
-### 7. Create two directories: "JSON_file" & "img" in the proper site of your computer
+### 5. Create two directories: "JSON_file" & "img" in the proper site of your computer
 
-### 8. set up the "config_own.py" file
+### 6. set up the "config_own.py" file
 
   ```
   # First create the "config_own.py" file in the "computer_vision" directory
