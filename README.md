@@ -1,4 +1,4 @@
-# 二手鞋資訊轉換平台
+# 二手鞋資訊轉換平台 ( The Information Transformation Platform of Second-Hand Shoes )
 Build with Windows OS and Azure.
 ![Architecture Workflow - with detail](https://user-images.githubusercontent.com/33646045/91403276-e3dcc180-e873-11ea-8646-83321ec11e57.png)
 
