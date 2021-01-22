@@ -1,5 +1,9 @@
 # 二手鞋資訊轉換平台 ( The Information Transformation Platform of Second-Hand Shoes )
+
+Since second-hand trading becomes a current trend, there are more and more people would like to sell their own object as a second-hand good. Taking the existing shopping platforms as the examples, the sellers have to fill in all the informations about their goods by themself, which is inconvenient sometimes. Our goal is to simplify the listing process of selling second-hand shoes, and to promote the willing of putting goods on the shelf. In this project, the Info Transformation Platform can return the depreciation rates, brands, styles, and web searching results of the shoes by taking or uploading photos from users.
+
 Build with Windows OS and Azure.
+
 ![Architecture Workflow - with detail](https://user-images.githubusercontent.com/33646045/91403276-e3dcc180-e873-11ea-8646-83321ec11e57.png)
 
 :signal_strength: [Introduction by Powerpoint](https://msseed9-my.sharepoint.com/:p:/g/personal/17-yvonne_hsiao_msseed_idv_tw/EUfuh_ZUXkZDm0cWxrKJEU4B3rYHyfW-gAc7EphmfDqTiw?e=UEqFON)
